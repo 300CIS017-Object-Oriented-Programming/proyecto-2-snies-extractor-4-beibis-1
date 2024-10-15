@@ -1,5 +1,6 @@
 #include "SNIESController.h"
 
+
 using namespace std;
 
 SNIESController::SNIESController(string &nuevaRutaProgramasCSV, string &nuevaRutaAdmitidos, string &nuevaRutaGraduados, string &nuevaRutaInscritos, string &nuevaRutaMatriculadosc, string &nuevaRutaMatriculadosPrimerSemestre, string &nuevaRutaOutput)
@@ -28,7 +29,7 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
 {
     vector<int> codigosSnies;
     vector<vector<string>> programasAcademicosVector;
-    int posicion;
+    //int posicion; //unused
     int columna;
     // cout << "antes leer programas csv" << endl;
     codigosSnies = gestorCsvObj.leerProgramasCsv(rutaProgramasCSV);
@@ -255,9 +256,8 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
         }
     }
 
-    bool archivoCreado;
-    archivoCreado = gestorCsvObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
-    // cout << archivoCreado << endl;
+    gestorCsvObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas); 
+
 }
 
 void SNIESController::buscarProgramas(bool flag, string &palabraClave, int idComparacion)
@@ -278,8 +278,7 @@ void SNIESController::buscarProgramas(bool flag, string &palabraClave, int idCom
 
     if (flag)
     {
-        bool creado;
-        creado = gestorCsvObj.crearArchivoBuscados(rutaOutput, listaProgramas, etiquetasColumnas);
+        gestorCsvObj.crearArchivoBuscados(rutaOutput, listaProgramas, etiquetasColumnas);
     }
 }
 
@@ -413,9 +412,51 @@ void SNIESController::calcularDatosExtra(bool flag)
         cout << endl;
     }
 
-    if (flag)
+    /*if (flag)
     {
-        bool creado;
-        creado = gestorCsvObj.crearArchivoExtra(rutaOutput, matrizFinal);
+        bool creado = gestorCsvObj.crearArchivoExtra(rutaOutput, matrizFinal);
+    }*/
+}
+
+
+
+
+void SNIESController::imprimirTodosLosDatos() //FUN DE PRUEBA 
+{
+    // Iteramos sobre el mapa de programas académicos
+    for (auto it = programasAcademicos.begin(); it != programasAcademicos.end(); ++it)
+    {
+        ProgramaAcademico *programa = it->second;
+
+        cout << "Codigo de la Institución: " << programa->getCodigoDeLaInstitucion() << endl;
+        cout << "IES Padre: " << programa->getIesPadre() << endl;
+        cout << "Institucion de Educación Superior: " << programa->getInstitucionDeEducacionSuperiorIes() << endl;
+        cout << "Principal o Seccional: " << programa->getPrincipalOSeccional() << endl;
+        cout << "Sector IES: " << programa->getSectorIes() << endl;
+        cout << "Código SNIES del Programa: " << programa->getCodigoSniesDelPrograma() << endl;
+        cout << "Programa Académico: " << programa->getProgramaAcademico() << endl;
+        cout << "Nivel Académico: " << programa->getNivelAcademico() << endl;
+        cout << "Nivel de Formación: " << programa->getNivelDeFormacion() << endl;
+        cout << "Metodología: " << programa->getMetodologia() << endl;
+        cout << "Área de Conocimiento: " << programa->getAreaDeConocimiento() << endl;
+
+        // Iteramos sobre los consolidados
+        for (int i = 0; i < 8; ++i)
+        {
+            Consolidado *consolidado = programa->getConsolidado(i);
+            if (consolidado != nullptr)  // Verificar que el consolidado no sea nulo
+            {
+                cout << "Consolidado " << i + 1 << ":" << endl;
+                cout << "    Sexo: " << consolidado->getSexo() << endl;
+                cout << "    Año: " << consolidado->getAno() << endl;
+                cout << "    Semestre: " << consolidado->getSemestre() << endl;
+                cout << "    Inscritos: " << consolidado->getInscritos() << endl;
+                cout << "    Admitidos: " << consolidado->getAdmitidos() << endl;
+                cout << "    Matriculados: " << consolidado->getMatriculados() << endl;
+                cout << "    Graduados: " << consolidado->getGraduados() << endl;
+                cout << "    Matriculados Primer Semestre: " << consolidado->getMatriculadosPrimerSemestre() << endl;
+            }
+        }
+        cout << "---------------------------------" << endl;
     }
 }
