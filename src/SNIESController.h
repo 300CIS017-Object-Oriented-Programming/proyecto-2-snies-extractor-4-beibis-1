@@ -8,7 +8,10 @@
 #include <list>
 #include "ProgramaAcademico.h"
 #include "Consolidado.h"
+#include "Gestor.h"
 #include "GestorCsv.h"
+#include "GestorJson.h"
+#include "GestorTXT.h"
 
 using namespace std;
 

@@ -152,10 +152,11 @@ bool View:: validarEntradaYN() {
 void View::mostrarDatosExtra() {
     cout << "A continuación vamos a mostrar datos relevantes de los programas académicos seleccionados" << "\n"
          << endl;
-    cout << "Desea Convertir los datos a un archivo CSV?(Y/N): " << endl;
+    cout << "Desea Convertir los datos a un archivo CSV, TXT O JSON?(Y/N): " << endl;
 
     bool opcionYN = validarEntradaYN();
     controlador.calcularDatosExtra(opcionYN);
+
 }
 
 

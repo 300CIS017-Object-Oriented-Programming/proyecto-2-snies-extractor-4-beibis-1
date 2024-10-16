@@ -256,7 +256,22 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
         }
     }
 
-    gestorCsvObj.crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas); 
+    int opcion;
+    cout << "Desea generar un archivo CSV (1), Desea generar un archivo TXT (2) o Desea generar un archivo JSON (3)" << endl;
+    cin >> opcion;
+
+    if (opcion == 1) {
+        GestorCsv* gestorObjAux = new GestorCsv();
+        gestorObjAux->crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
+    }
+    else if (opcion == 2) {
+        GestorTxt* gestorObjAux = new GestorTxt();
+        gestorObjAux->crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
+    }
+    else {
+        GestorJson* gestorObjAux = new GestorJson();
+        gestorObjAux->crearArchivo(rutaOutput, programasAcademicos, etiquetasColumnas);
+    }
 
 }
 
@@ -278,7 +293,22 @@ void SNIESController::buscarProgramas(bool flag, string &palabraClave, int idCom
 
     if (flag)
     {
-        gestorCsvObj.crearArchivoBuscados(rutaOutput, listaProgramas, etiquetasColumnas);
+        int opcion;
+        cout << "Desea generar un archivo CSV (1), Desea generar un archivo TXT (2) o Desea generar un archivo JSON (3)" << endl;
+        cin >> opcion;
+
+        if (opcion == 1) {
+            GestorCsv* gestorObjAux = new GestorCsv();
+            gestorObjAux->crearArchivoBuscados(rutaOutput, listaProgramas, etiquetasColumnas);
+        }
+        else if (opcion == 2) {
+            GestorTxt* gestorObjAux = new GestorTxt();
+            gestorObjAux->crearArchivoBuscados(rutaOutput, listaProgramas, etiquetasColumnas);
+        }
+        else {
+            GestorJson* gestorObjAux = new GestorJson();
+            gestorObjAux->crearArchivoBuscados(rutaOutput, listaProgramas, etiquetasColumnas);
+        }
     }
 }
 
@@ -412,10 +442,26 @@ void SNIESController::calcularDatosExtra(bool flag)
         cout << endl;
     }
 
-    /*if (flag)
+    if (flag)
     {
-        bool creado = gestorCsvObj.crearArchivoExtra(rutaOutput, matrizFinal);
-    }*/
+        int opcion;
+        cout << "Desea generar un archivo CSV (1), Desea generar un archivo TXT (2) o Desea generar un archivo JSON (3)" << endl;
+        cin >> opcion;
+
+        if (opcion == 1) {
+            GestorCsv* gestorObjAux = new GestorCsv();
+            gestorObjAux->crearArchivoExtra(rutaOutput, matrizFinal);
+        }
+        else if (opcion == 2) {
+            GestorTxt* gestorObjAux = new GestorTxt();
+            gestorObjAux->crearArchivoExtra(rutaOutput, matrizFinal);
+        }
+        else {
+            GestorJson* gestorObjAux = new GestorJson();
+            gestorObjAux->crearArchivoExtra(rutaOutput, matrizFinal);
+        }
+
+    }
 }
 
 

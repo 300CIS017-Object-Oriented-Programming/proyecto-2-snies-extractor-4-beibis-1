@@ -8,12 +8,12 @@
 #include <sstream>
 #include <list>
 #include <algorithm>
-#include "ProgramaAcademico.h"
-#include "Consolidado.h"
+#include "Gestor.h"
+#include "Settings.h"
 
 using namespace std;
 
-class GestorCsv
+class GestorCsv : public Gestor
 {
 public:
     GestorCsv() = default;

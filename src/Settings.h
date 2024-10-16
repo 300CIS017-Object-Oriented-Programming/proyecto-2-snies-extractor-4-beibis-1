@@ -16,31 +16,21 @@
  *
  */
 
+
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
 #include <string>
-class Settings
-{
+
+class Settings {
 public:
-    // En la clase Settings, las variables ADMITIDOS_FILE_PATH, MATRICULADOS_FILE_PATH y ETC se declaran como static const std::string. Esto significa que son constantes de tipo string que pertenecen a la clase en lugar de a instancias individuales de la clase.
+    // Declaración de las variables estáticas como constantes.
     static const std::string ADMITIDOS_FILE_PATH;
     static const std::string MATRICULADOS_FILE_PATH;
     static const std::string INSCRITOS_FILE_PATH;
     static const std::string PROGRAMAS_FILTRAR_FILE_PATH;
     static const std::string BASE_PATH;
-    static const std::string DELIMITADOR;
-
-    // FIXME completar para el resto de constantes
+    static char delimitador;
 };
-
-// Declaración:
-// Inicialización: La inicialización de estas variables se realiza fuera de la clase. Esto es necesario porque las variables estáticas deben ser definidas en un solo lugar en el archivo de implementación (o en el mismo archivo, pero fuera de la clase) para que el compilador sepa cuánto espacio reservar en memoria.
-const std::string Settings::BASE_PATH = "C:/SNIES_EXTRACTOR/inputs/";
-const std::string Settings::PROGRAMAS_FILTRAR_FILE_PATH = BASE_PATH + "programas.csv";
-const std::string Settings::ADMITIDOS_FILE_PATH = BASE_PATH + "admitidos";
-const std::string Settings::MATRICULADOS_FILE_PATH = BASE_PATH + "matriculados";
-const std::string Settings::INSCRITOS_FILE_PATH = BASE_PATH + "inscritos";
-const std::string Settings::DELIMITADOR = ";";
 
 #endif // SETTINGS_H
