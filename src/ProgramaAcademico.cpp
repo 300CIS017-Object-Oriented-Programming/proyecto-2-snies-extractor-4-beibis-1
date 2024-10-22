@@ -2,37 +2,34 @@
 
 using namespace std;
 
-ProgramaAcademico::ProgramaAcademico()
-{
-    consolidados = vector<Consolidado *>(8);
+ProgramaAcademico::ProgramaAcademico() {
+    for (int i= 0; i < Settings:: columnasInfoConsolidados; ++i) { ///Recordemos el número 8 
+        consolidados[i] = nullptr;
+    }
+        
 }
 
-void ProgramaAcademico::setCodigoDeLaInstitucion(int nuevoCodigoDeLaInstitucion)
-{
+void ProgramaAcademico::setCodigoDeLaInstitucion(int nuevoCodigoDeLaInstitucion) {
     codigoDeLaInstitucion = nuevoCodigoDeLaInstitucion;
 }
 
-int ProgramaAcademico::getCodigoDeLaInstitucion()
-{
+int ProgramaAcademico::getCodigoDeLaInstitucion() {
     return codigoDeLaInstitucion;
 }
 
-void ProgramaAcademico::setIesPadre(int nuevoIesPadre)
-{
+void ProgramaAcademico::setIesPadre(int nuevoIesPadre) {
     iesPadre = nuevoIesPadre;
 }
 
-int ProgramaAcademico::getIesPadre()
-{
+int ProgramaAcademico::getIesPadre() {
     return iesPadre;
 }
 
-void ProgramaAcademico::setInstitucionDeEducacionSuperiorIes(string &nuevoInstitucionDeEducacionSuperiorIes)
-{
+void ProgramaAcademico::setInstitucionDeEducacionSuperiorIes(string &nuevoInstitucionDeEducacionSuperiorIes) {
     institucionDeEducacionSuperiorIes = nuevoInstitucionDeEducacionSuperiorIes;
 }
-string ProgramaAcademico::getInstitucionDeEducacionSuperiorIes()
-{
+
+string ProgramaAcademico::getInstitucionDeEducacionSuperiorIes() {
     return institucionDeEducacionSuperiorIes;
 }
 
@@ -339,15 +336,20 @@ void ProgramaAcademico::setConsolidado(Consolidado *nuevoConsolidado, int pos)
     consolidados[pos] = nuevoConsolidado;
 }
 
-Consolidado *ProgramaAcademico::getConsolidado(int posicionConsolidado)
-{
-    return consolidados[posicionConsolidado];
+Consolidado *ProgramaAcademico::getConsolidado(int ano) {
+    if (consolidados.find(ano) != consolidados.end()) {
+        return consolidados[ano];
+    }
+    else {
+        return nullptr; 
+    }
 }
 
-ProgramaAcademico::~ProgramaAcademico()
-{
-    for (Consolidado *consolidado : consolidados)
-    {
-        delete consolidado;
+ProgramaAcademico::~ProgramaAcademico() {
+    map <int, Consolidado*>:: iterator it; 
+    for (it = consolidados.begin(); it != consolidados.end(); ++it) {
+        delete it -> second; 
+        it-> second = nullptr; 
+        
     }
 }

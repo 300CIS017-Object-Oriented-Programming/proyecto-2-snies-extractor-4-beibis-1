@@ -12,6 +12,7 @@
 #include "GestorCsv.h"
 #include "GestorJson.h"
 #include "GestorTXT.h"
+#include "Settings.h"
 
 using namespace std;
 

@@ -2,16 +2,13 @@
 #define PROGRAMA_ACADEMICO_H
 
 #include <string>
+#include <map>
 #include <vector>
 #include <iostream>
 #include "Consolidado.h"
+#include "Settings.h"
 
-using std::cin;
-using std::cout;
-using std::endl;
-using std::string;
-using std::vector;
-
+using namespace std;
 class ProgramaAcademico
 {
     int codigoDeLaInstitucion;
@@ -48,7 +45,15 @@ class ProgramaAcademico
     string departamentoDeOfertaDelPrograma;
     int codigoDelMunicipioPrograma;
     string municipioDeOfertaDelPrograma;
-    vector<Consolidado *> consolidados;
+    
+    
+
+    map<int, Consolidado* > consolidados; 
+    
+
+
+
+
 
 public:
     ProgramaAcademico();
