@@ -31,6 +31,7 @@ public:
     static const std::string PROGRAMAS_FILTRAR_FILE_PATH;
     static const std::string BASE_PATH;
     static const char delimitador;
+
 };
 
 #endif // SETTINGS_H
