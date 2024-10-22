@@ -1,3 +1,0 @@
-C:/Users/mond_/OneDrive/Escritorio/compilarCLION/proyecto-2-snies-extractor-4-beibis-1/src/cmake-build-debug/CMakeFiles/src.dir
-C:/Users/mond_/OneDrive/Escritorio/compilarCLION/proyecto-2-snies-extractor-4-beibis-1/src/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/mond_/OneDrive/Escritorio/compilarCLION/proyecto-2-snies-extractor-4-beibis-1/src/cmake-build-debug/CMakeFiles/rebuild_cache.dir
