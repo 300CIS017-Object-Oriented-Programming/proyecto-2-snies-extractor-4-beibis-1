@@ -318,6 +318,46 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
     }
 }
 
+void SNIESController::buscarProgramas(bool flag, string &palabraClave, int idComparacion)
+{
+    list<ProgramaAcademico *> listaProgramas;
+    for (map<int, ProgramaAcademico *>::iterator it = programasAcademicos.begin(); it != programasAcademicos.end(); ++it)
+    {
+        ProgramaAcademico *programa = it->second;
+        string nombre = programa->getProgramaAcademico();
+        int id = programa->getIdNivelDeFormacion();
+        if (nombre.find(palabraClave) != string::npos && id == idComparacion)
+        {
+            listaProgramas.push_back(programa);
+            // codigo SNIES, nombre del programa, codigo de la institucion, nombre de la institucion y metodología
+            cout << programa->getCodigoSniesDelPrograma() << ";" << programa->getProgramaAcademico() << ";" << programa->getCodigoDeLaInstitucion() << ";" << programa->getInstitucionDeEducacionSuperiorIes() << ";" << programa->getMetodologia() << endl;
+        }
+    }
+
+    if (flag)
+    {
+        int opcion;
+        cout << "Desea generar un archivo CSV (1), Desea generar un archivo TXT (2) o Desea generar un archivo JSON (3)" << endl;
+        cin >> opcion;
+
+        if (opcion == 1)
+        {
+            GestorCsv *gestorObjAux = new GestorCsv();
+            gestorObjAux->crearArchivoBuscados(rutaOutput, listaProgramas, etiquetasColumnas);
+        }
+        else if (opcion == 2)
+        {
+            GestorTxt *gestorObjAux = new GestorTxt();
+            gestorObjAux->crearArchivoBuscados(rutaOutput, listaProgramas, etiquetasColumnas);
+        }
+        else
+        {
+            GestorJson *gestorObjAux = new GestorJson();
+            gestorObjAux->crearArchivoBuscados(rutaOutput, listaProgramas, etiquetasColumnas);
+        }
+    }
+}
+
 void SNIESController::calcularDatosExtra(bool flag)
 {
     vector<vector<string>> matrizFinal;
