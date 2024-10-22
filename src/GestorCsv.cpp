@@ -368,7 +368,7 @@ bool GestorCsv::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapade
         for (it = mapadeProgramasAcademicos.begin(); it != mapadeProgramasAcademicos.end(); it++)
         {
             // Imprimimos cada uno de los 8 consolidados por programa
-            for (int i = 0; i < Settings:: columnasInfoConsolidados; i++)
+            for (int i = 0; i < Settings::COMUNAS_INFO_CONSOLIDADOS; i++)
             {
                 // Imprimimos toda la información base del programa academico
                 archivoResultados << (it->second)->getCodigoDeLaInstitucion() << Settings:: delimitador;
@@ -453,7 +453,7 @@ bool GestorCsv::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &pr
         for (it = programasBuscados.begin(); it != programasBuscados.end(); it++)
         {
             // Imprimimos los 8 consolidados del programa
-            for (int i = 0; i < Settings:: columnasInfoConsolidados; i++)
+            for (int i = 0; i < Settings:: COMUNAS_INFO_CONSOLIDADOS; i++)
             {
                 // Imprimimos la informacion base del programa
                 archivoBuscados << (*it)->getCodigoDeLaInstitucion() << Settings:: delimitador;

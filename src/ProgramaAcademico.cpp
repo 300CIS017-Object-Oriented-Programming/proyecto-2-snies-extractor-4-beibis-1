@@ -3,7 +3,7 @@
 using namespace std;
 
 ProgramaAcademico::ProgramaAcademico() {
-    for (int i= 0; i < Settings:: columnasInfoConsolidados; ++i) { ///Recordemos el número 8 
+    for (int i= 0; i < Settings::COMUNAS_INFO_CONSOLIDADOS; ++i) { ///Recordemos el número 8
         consolidados[i] = nullptr;
     }
         
