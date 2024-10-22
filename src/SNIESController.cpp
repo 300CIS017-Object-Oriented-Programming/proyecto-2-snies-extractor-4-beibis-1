@@ -38,8 +38,8 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
     // cout << "despues leer archivos Primera" << endl;
     etiquetasColumnas = programasAcademicosVector[0];
 
-    for (int i = 1; i < programasAcademicosVector.size(); i += 4)
-    {
+    for (int i = 1; i < programasAcademicosVector.size(); i += Settings:: datosAcademDemograf) {
+        
         ProgramaAcademico *programaAcademico = new ProgramaAcademico();
         programaAcademico->setCodigoDeLaInstitucion(stoi(programasAcademicosVector[i][0]));          // CÓDIGO DE LA INSTITUCIÓN
         programaAcademico->setIesPadre(stoi(programasAcademicosVector[i][1]));                       // IES_PADRE
@@ -76,7 +76,7 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
         programaAcademico->setCodigoDelMunicipioPrograma(stoi(programasAcademicosVector[i][32]));    // CÓDIGO DEL MUNICIPIO (PROGRAMA)
         programaAcademico->setMunicipioDeOfertaDelPrograma(programasAcademicosVector[i][33]);        // MUNICIPIO DE OFERTA DEL PROGRAMA
         Consolidado *consolidado[4];
-        for (int m = 0; m < 4; ++m)
+        for (int m = 0; m < Settings:: datosAcademDemograf; ++m)
         {
             consolidado[m] = new Consolidado();
             consolidado[m]->setIdSexo(stoi(programasAcademicosVector[i + m][34]));
@@ -91,7 +91,7 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
     // cout << "despues crear programas academicos" << endl;
     programasAcademicosVector = gestorCsvObj.leerArchivoSegunda(rutaAdmitidos, ano2, codigosSnies);
     // cout << "despues leer archivos segunda" << endl;
-    for (int j = 0; j < programasAcademicosVector.size(); j += 4)
+    for (int j = 0; j < programasAcademicosVector.size(); j += Settings:: datosAcademDemograf)
     {
         map<int, ProgramaAcademico *>::iterator it = programasAcademicos.find(stoi(programasAcademicosVector[j][0]));
         if (it != programasAcademicos.end())
@@ -99,7 +99,7 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
             ProgramaAcademico *programa = it->second;
 
             Consolidado *consolidado[4];
-            for (int m = 0; m < 4; ++m)
+            for (int m = 0; m < Settings:: datosAcademDemograf; ++m)
             {
                 consolidado[m] = new Consolidado();
                 consolidado[m]->setIdSexo(stoi(programasAcademicosVector[j + m][1]));
@@ -114,14 +114,14 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
     // cout << "despues crear todos los consolidados" << endl;
     programasAcademicosVector = gestorCsvObj.leerArchivo(rutaGraduados, ano1, codigosSnies, 13);
 
-    for (int k = 0; k < programasAcademicosVector.size(); k += 4)
+    for (int k = 0; k < programasAcademicosVector.size(); k += Settings:: datosAcademDemograf)
     {
         map<int, ProgramaAcademico *>::iterator it = programasAcademicos.find(stoi(programasAcademicosVector[k][0]));
         if (it != programasAcademicos.end())
         {
             ProgramaAcademico *programa = it->second;
 
-            for (int m = 0; m < 4; ++m)
+            for (int m = 0; m < Settings:: datosAcademDemograf; ++m)
             {
                 Consolidado *consolidado = programa->getConsolidado(m);
                 consolidado->setGraduados(stoi(programasAcademicosVector[k + m][1]));
@@ -131,15 +131,12 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
 
     programasAcademicosVector = gestorCsvObj.leerArchivo(rutaGraduados, ano2, codigosSnies, 13);
 
-    for (int k = 0; k < programasAcademicosVector.size(); k += 4)
-    {
+    for (int k = 0; k < programasAcademicosVector.size(); k += Settings:: datosAcademDemograf) {
         map<int, ProgramaAcademico *>::iterator it = programasAcademicos.find(stoi(programasAcademicosVector[k][0]));
-        if (it != programasAcademicos.end())
-        {
+        if (it != programasAcademicos.end()) {
             ProgramaAcademico *programa = it->second;
 
-            for (int m = 0; m < 4; ++m)
-            {
+            for (int m = 0; m < Settings:: datosAcademDemograf; ++m) {
                 Consolidado *consolidado = programa->getConsolidado(m + 4);
                 consolidado->setGraduados(stoi(programasAcademicosVector[k + m][1]));
             }
@@ -147,14 +144,14 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
     }
 
     programasAcademicosVector = gestorCsvObj.leerArchivo(rutaInscritos, ano1, codigosSnies, 12);
-    for (int k = 0; k < programasAcademicosVector.size(); k += 4)
+    for (int k = 0; k < programasAcademicosVector.size(); k += Settings:: datosAcademDemograf)
     {
         map<int, ProgramaAcademico *>::iterator it = programasAcademicos.find(stoi(programasAcademicosVector[k][0]));
         if (it != programasAcademicos.end())
         {
             ProgramaAcademico *programa = it->second;
 
-            for (int m = 0; m < 4; ++m)
+            for (int m = 0; m < Settings:: datosAcademDemograf; ++m)
             {
                 Consolidado *consolidado = programa->getConsolidado(m);
                 consolidado->setInscritos(stoi(programasAcademicosVector[k + m][1]));
@@ -173,14 +170,14 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
 
     programasAcademicosVector = gestorCsvObj.leerArchivo(rutaInscritos, ano2, codigosSnies, columna);
 
-    for (int k = 0; k < programasAcademicosVector.size(); k += 4)
+    for (int k = 0; k < programasAcademicosVector.size(); k += Settings:: datosAcademDemograf)
     {
         map<int, ProgramaAcademico *>::iterator it = programasAcademicos.find(stoi(programasAcademicosVector[k][0]));
         if (it != programasAcademicos.end())
         {
             ProgramaAcademico *programa = it->second;
 
-            for (int m = 0; m < 4; ++m)
+            for (int m = 0; m < Settings:: datosAcademDemograf; ++m)
             {
                 Consolidado *consolidado = programa->getConsolidado(m + 4);
                 consolidado->setInscritos(stoi(programasAcademicosVector[k + m][1]));
@@ -197,7 +194,7 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
         {
             ProgramaAcademico *programa = it->second;
 
-            for (int m = 0; m < 4; ++m)
+            for (int m = 0; m < Settings:: datosAcademDemograf; ++m)
             {
                 Consolidado *consolidado = programa->getConsolidado(m);
                 consolidado->setMatriculados(stoi(programasAcademicosVector[k + m][1]));
@@ -207,14 +204,14 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
 
     programasAcademicosVector = gestorCsvObj.leerArchivo(rutaMatriculados, ano2, codigosSnies, 13);
 
-    for (int k = 0; k < programasAcademicosVector.size(); k += 4)
+    for (int k = 0; k < programasAcademicosVector.size(); k += Settings:: datosAcademDemograf)
     {
         map<int, ProgramaAcademico *>::iterator it = programasAcademicos.find(stoi(programasAcademicosVector[k][0]));
         if (it != programasAcademicos.end())
         {
             ProgramaAcademico *programa = it->second;
 
-            for (int m = 0; m < 4; ++m)
+            for (int m = 0; m < Settings:: datosAcademDemograf; ++m)
             {
                 Consolidado *consolidado = programa->getConsolidado(m + 4);
                 consolidado->setMatriculados(stoi(programasAcademicosVector[k + m][1]));
@@ -224,14 +221,14 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
 
     programasAcademicosVector = gestorCsvObj.leerArchivo(rutaMatriculadosPrimerSemestre, ano1, codigosSnies, 13);
 
-    for (int k = 0; k < programasAcademicosVector.size(); k += 4)
+    for (int k = 0; k < programasAcademicosVector.size(); k += Settings:: datosAcademDemograf)
     {
         map<int, ProgramaAcademico *>::iterator it = programasAcademicos.find(stoi(programasAcademicosVector[k][0]));
         if (it != programasAcademicos.end())
         {
             ProgramaAcademico *programa = it->second;
 
-            for (int m = 0; m < 4; ++m)
+            for (int m = 0; m < Settings:: datosAcademDemograf; ++m)
             {
                 Consolidado *consolidado = programa->getConsolidado(m);
                 consolidado->setMatriculadosPrimerSemestre(stoi(programasAcademicosVector[k + m][1]));
@@ -241,14 +238,14 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
 
     programasAcademicosVector = gestorCsvObj.leerArchivo(rutaMatriculadosPrimerSemestre, ano2, codigosSnies, 13);
 
-    for (int k = 0; k < programasAcademicosVector.size(); k += 4)
+    for (int k = 0; k < programasAcademicosVector.size(); k += Settings:: datosAcademDemograf)
     {
         map<int, ProgramaAcademico *>::iterator it = programasAcademicos.find(stoi(programasAcademicosVector[k][0]));
         if (it != programasAcademicos.end())
         {
             ProgramaAcademico *programa = it->second;
 
-            for (int m = 0; m < 4; ++m)
+            for (int m = 0; m < Settings:: datosAcademDemograf; ++m)
             {
                 Consolidado *consolidado = programa->getConsolidado(m + 4);
                 consolidado->setMatriculadosPrimerSemestre(stoi(programasAcademicosVector[k + m][1]));
@@ -338,28 +335,28 @@ void SNIESController::calcularDatosExtra(bool flag)
         int idMetodologiaBuscada = programa->getIdMetodologia();
         if (idMetodologiaBuscada == 1 || idMetodologiaBuscada == 3)
         {
-            for (int i = 0; i < 4; ++i)
+            for (int i = 0; i < Settings:: datosAcademDemograf; ++i)
             {
                 Consolidado *consolidado = programa->getConsolidado(i);
                 int matriculados = consolidado->getMatriculados();
                 sumaPrimerAno += matriculados;
             }
 
-            for (int i = 0; i < 4; ++i)
+            for (int i = 0; i < Settings:: datosAcademDemograf; ++i)
             {
                 Consolidado *consolidado = programa->getConsolidado(i + 4);
                 int matriculados = consolidado->getMatriculados();
                 sumaSegundoAno += matriculados;
             }
         }
-        for (int i = 0; i < 4; ++i)
+        for (int i = 0; i < Settings:: datosAcademDemograf; ++i)
         {
             Consolidado *consolidado = programa->getConsolidado(i);
             int numNeos = consolidado->getMatriculadosPrimerSemestre();
             neosPrimerAno += numNeos;
         }
 
-        for (int i = 0; i < 4; ++i)
+        for (int i = 0; i < Settings:: datosAcademDemograf; ++i)
         {
             Consolidado *consolidado = programa->getConsolidado(i + 4);
             int numNeos = consolidado->getMatriculadosPrimerSemestre();
@@ -380,7 +377,7 @@ void SNIESController::calcularDatosExtra(bool flag)
         int SumaNeosSegundoSemestre;
         int SumaNeosTercerSemestre;
         int SumaNeosCuartoSemestre;
-        for (int i = 0; i < 4; ++i)
+        for (int i = 0; i < Settings:: datosAcademDemograf; ++i)
         {
             Consolidado *consolidados[8];
             if (i == 0)
@@ -485,14 +482,14 @@ void SNIESController::imprimirTodosLosDatos() //FUN DE PRUEBA
         cout << "Nivel de Formación: " << programa->getNivelDeFormacion() << endl;
         cout << "Metodología: " << programa->getMetodologia() << endl;
         cout << "Área de Conocimiento: " << programa->getAreaDeConocimiento() << endl;
-
-        // Iteramos sobre los consolidados
-        for (int i = 0; i < 8; ++i)
+        
+        // Iteramos sobre el mapa de consoliddos 
+        for (int i= 0; i < Settings:: columnasInfoConsolidados; ++i)
         {
-            Consolidado *consolidado = programa->getConsolidado(i);
-            if (consolidado != nullptr)  // Verificar que el consolidado no sea nulo
+            Consolidado* consolidado = programa->getConsolidado(i);;  
+            if (consolidado != nullptr)  
             {
-                cout << "Consolidado " << i + 1 << ":" << endl;
+                cout << "Consolidado del año " << it->first << ":" << endl;  // it->first es la clave (el año)
                 cout << "    Sexo: " << consolidado->getSexo() << endl;
                 cout << "    Año: " << consolidado->getAno() << endl;
                 cout << "    Semestre: " << consolidado->getSemestre() << endl;

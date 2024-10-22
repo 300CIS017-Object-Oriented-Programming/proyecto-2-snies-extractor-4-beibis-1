@@ -31,6 +31,8 @@ public:
     static const std::string PROGRAMAS_FILTRAR_FILE_PATH;
     static const std::string BASE_PATH;
     static char delimitador;
+    static const int columnasInfoConsolidados;
+    static const int datosAcademDemograf;
 };
 
 #endif // SETTINGS_H

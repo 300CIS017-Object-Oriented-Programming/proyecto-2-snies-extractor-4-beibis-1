@@ -1,11 +1,9 @@
 #include "View.h"
 
-int main()
-{
+int main() {
     View menu;
     bool archivosParametrizados = menu.mostrarPantallaBienvenido();
-    if (archivosParametrizados)
-    {
+    if (archivosParametrizados) {
         menu.mostrarDatosExtra();
         menu.buscarPorPalabraClaveYFormacion();
     }
