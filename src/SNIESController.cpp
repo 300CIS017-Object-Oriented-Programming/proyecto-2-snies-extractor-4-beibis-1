@@ -422,10 +422,10 @@ void SNIESController::calcularDatosExtra(bool flag)
         }
         datosEtiquetas2 = {to_string(programa->getCodigoSniesDelPrograma()), programa->getProgramaAcademico(), programa->getInstitucionDeEducacionSuperiorIes(), to_string(diferenciaNeos)};
         matrizEtiquetas2.push_back(datosEtiquetas2);
-        int SumaNeosPrimerSemestre;
-        int SumaNeosSegundoSemestre;
-        int SumaNeosTercerSemestre;
-        int SumaNeosCuartoSemestre;
+        int SumaNeosPrimerSemestre = 0;
+        int SumaNeosSegundoSemestre = 0;
+        int SumaNeosTercerSemestre = 0;
+        int SumaNeosCuartoSemestre = 0;
         for (int i = 0; i < Settings::DATOS_ACADEM_DEMOGRAF; ++i)
         {
             Consolidado *consolidados[8];

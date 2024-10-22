@@ -1,0 +1,13 @@
+# ninja log v6
+71	758	7513365605226501	CMakeFiles/src.dir/Settings.cpp.obj	c90e9c62ae08dc3d
+4	912	7513365604566095	CMakeFiles/src.dir/Consolidado.cpp.obj	d05d57940687524e
+47	1058	7513365604995742	CMakeFiles/src.dir/main.cpp.obj	67eaad15340e2107
+36	1216	7513365604880428	CMakeFiles/src.dir/GestorTXT.cpp.obj	5a01d09c3e8b1f51
+57	1220	7513365605090972	CMakeFiles/src.dir/ProgramaAcademico.cpp.obj	ef29691fda5a0c67
+28	1267	7513365604795160	CMakeFiles/src.dir/GestorJson.cpp.obj	bf021a8ae6ec76f5
+105	1336	7513365605577837	CMakeFiles/src.dir/View.cpp.obj	fecd74f9aeb5726e
+17	1583	7513365604691289	CMakeFiles/src.dir/GestorCsv.cpp.obj	f43432896317b931
+90	2142	7513365605427152	CMakeFiles/src.dir/SNIESController.cpp.obj	49c1b3bda77fb11f
+2143	2565	7513365625951453	src.exe	2729ea34230f908c
+28	926	7513366960431863	CMakeFiles/src.dir/SNIESController.cpp.obj	49c1b3bda77fb11f
+927	1209	7513366969418037	src.exe	2729ea34230f908c
