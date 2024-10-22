@@ -16,13 +16,13 @@
  *
  */
 
-
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
 #include <string>
 
-class Settings {
+class Settings
+{
 public:
     // Declaración de las variables estáticas como constantes.
     static const std::string ADMITIDOS_FILE_PATH;
@@ -30,7 +30,7 @@ public:
     static const std::string INSCRITOS_FILE_PATH;
     static const std::string PROGRAMAS_FILTRAR_FILE_PATH;
     static const std::string BASE_PATH;
-    static char delimitador;
+    static const char delimitador;
 };
 
 #endif // SETTINGS_H
