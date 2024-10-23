@@ -10,4 +10,8 @@
   const char Settings::DELIMITADOR = ';';
   const int Settings::COLUMNAS_INFO_CONSOLIDADOS = 8;
   const int Settings::DATOS_ACADEM_DEMOGRAF = 4;
+  const int Settings::COLUMNA_13 = 13;
+  const int Settings::COLUMNA_12 = 12;
+  const int Settings::FILAS_RESTANTES = 3; 
+
 

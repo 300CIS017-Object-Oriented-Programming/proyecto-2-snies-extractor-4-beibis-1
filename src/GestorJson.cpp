@@ -48,7 +48,7 @@ bool GestorJson::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapad
             // Lista de consolidados
             archivoResultados << "    \"Consolidados\": [" << endl;
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < Settings::COLUMNAS_INFO_CONSOLIDADOS; i++)
             {
                 Consolidado *consolidadoActual = (it->second)->getConsolidado(i);
                 archivoResultados << "      {" << endl;
@@ -132,7 +132,7 @@ bool GestorJson::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &p
             archivoBuscados << "        \"municipio_oferta_programa\": \"" << (*it)->getMunicipioDeOfertaDelPrograma() << "\"," << endl;
 
             // Información del consolidado
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < Settings::COLUMNAS_INFO_CONSOLIDADOS; i++) {
                 Consolidado *consolidadoActual = (*it)->getConsolidado(i);
                 archivoBuscados << "        \"consolidado_" << i << "\": {" << endl;
                 archivoBuscados << "            \"id_sexo\": \"" << consolidadoActual->getIdSexo() << "\"," << endl;

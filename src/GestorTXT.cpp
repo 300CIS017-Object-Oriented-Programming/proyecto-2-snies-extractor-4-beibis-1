@@ -20,7 +20,7 @@ bool GestorTxt::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapade
         for (it = mapadeProgramasAcademicos.begin(); it != mapadeProgramasAcademicos.end(); it++)
         {
             // Se imprimen los 8 consolidados
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < Settings::COLUMNAS_INFO_CONSOLIDADOS; i++) {
                 archivoResultados << (it->second)->getCodigoDeLaInstitucion() << "    ";
                 archivoResultados << (it->second)->getIesPadre() << "    ";
                 archivoResultados << (it->second)->getInstitucionDeEducacionSuperiorIes() << "    ";
@@ -103,7 +103,7 @@ bool GestorTxt::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &pr
         list<ProgramaAcademico *>::iterator it;
         for (it = programasBuscados.begin(); it != programasBuscados.end(); it++) {
             // Imprimir 8 consolidados del programa
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < Settings::COLUMNAS_INFO_CONSOLIDADOS; i++) {
                 archivoBuscados << (*it)->getCodigoDeLaInstitucion() << "\t";
                 archivoBuscados << (*it)->getIesPadre() << "\t";
                 archivoBuscados << (*it)->getInstitucionDeEducacionSuperiorIes() << "\t";

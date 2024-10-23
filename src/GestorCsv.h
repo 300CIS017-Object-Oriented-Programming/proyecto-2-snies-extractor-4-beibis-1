@@ -9,7 +9,7 @@
 #include <list>
 #include <algorithm>
 #include "Gestor.h"
-#include "Settings.h"
+
 
 using namespace std;
 

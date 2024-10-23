@@ -112,7 +112,7 @@ vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &a
                 indiceColumna++;
             }
 
-            if (filaTemporal.size() > 12 && filaTemporal[12] != "Sin programa especifico")
+            if (filaTemporal.size() > Settings::COLUMNA_12 && filaTemporal[12] != "Sin programa especifico")
             {
                 it = find(codigosSnies.begin(), codigosSnies.end(), stoi(filaTemporal[12]));
             }
@@ -190,7 +190,7 @@ vector<vector<string>> GestorCsv::leerArchivoSegunda(string &rutaBase, string &a
             indiceColumna++;
         }
 
-        if (filaTemporal.size() > 12 && filaTemporal[12] != "Sin programa especifico")
+        if (filaTemporal.size() > Settings::COLUMNA_12 && filaTemporal[12] != "Sin programa especifico")
         {
             it = find(codigosSnies.begin(), codigosSnies.end(), stoi(filaTemporal[12]));
         }
@@ -276,7 +276,7 @@ vector<vector<string>> GestorCsv::leerArchivo(string &rutaBase, string &ano, vec
                 matrizResultado.push_back(vectorFila);
 
                 // Leer las otras 3 filas
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < Settings::FILAS_RESTANTES; i++)
                 {
                     getline(archivoSegundo, fila);
                     streamFila = stringstream(fila);

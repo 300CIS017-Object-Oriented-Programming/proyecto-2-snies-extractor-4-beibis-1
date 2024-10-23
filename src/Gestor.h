@@ -7,6 +7,7 @@
 #include <vector>
 #include "ProgramaAcademico.h"
 #include "Consolidado.h"
+#include "Settings.h"
 
 using namespace std;
 

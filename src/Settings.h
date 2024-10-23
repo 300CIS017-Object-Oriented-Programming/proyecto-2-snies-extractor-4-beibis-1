@@ -33,6 +33,9 @@ public:
     static const char DELIMITADOR;
     static const int COLUMNAS_INFO_CONSOLIDADOS;
     static const int DATOS_ACADEM_DEMOGRAF;
+    static const int COLUMNA_12; 
+    static const int COLUMNA_13;
+    static const int FILAS_RESTANTES;
 
 };
 
