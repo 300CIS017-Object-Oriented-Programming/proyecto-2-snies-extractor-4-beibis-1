@@ -30,8 +30,8 @@ public:
     static const std::string INSCRITOS_FILE_PATH;
     static const std::string PROGRAMAS_FILTRAR_FILE_PATH;
     static const std::string BASE_PATH;
-    static const char delimitador;
-    static const int COMUNAS_INFO_CONSOLIDADOS;
+    static const char DELIMITADOR;
+    static const int COLUMNAS_INFO_CONSOLIDADOS;
     static const int DATOS_ACADEM_DEMOGRAF;
 
 };

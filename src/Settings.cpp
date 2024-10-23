@@ -7,7 +7,7 @@
   const std::string Settings::ADMITIDOS_FILE_PATH = Settings::BASE_PATH + "admitidos";
   const std::string Settings::MATRICULADOS_FILE_PATH = Settings::BASE_PATH + "matriculados";
   const std::string Settings::INSCRITOS_FILE_PATH = Settings::BASE_PATH + "inscritos";
-  const char Settings::delimitador = ';';
-  const int Settings::COMUNAS_INFO_CONSOLIDADOS = 8;
+  const char Settings::DELIMITADOR = ';';
+  const int Settings::COLUMNAS_INFO_CONSOLIDADOS = 8;
   const int Settings::DATOS_ACADEM_DEMOGRAF = 4;
 

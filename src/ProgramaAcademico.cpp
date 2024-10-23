@@ -3,11 +3,9 @@
 using namespace std;
 
 ProgramaAcademico::ProgramaAcademico() {
-    for (int i= 0; i < Settings::COMUNAS_INFO_CONSOLIDADOS; ++i) { ///Recordemos el número 8
-        consolidados[i] = nullptr;
-    }
-        
+    consolidados = vector<Consolidado *>(Settings::COLUMNAS_INFO_CONSOLIDADOS);
 }
+
 
 void ProgramaAcademico::setCodigoDeLaInstitucion(int nuevoCodigoDeLaInstitucion) {
     codigoDeLaInstitucion = nuevoCodigoDeLaInstitucion;
@@ -331,25 +329,16 @@ string ProgramaAcademico::getMunicipioDeOfertaDelPrograma()
     return municipioDeOfertaDelPrograma;
 }
 
-void ProgramaAcademico::setConsolidado(Consolidado *nuevoConsolidado, int pos)
-{
+void ProgramaAcademico::setConsolidado(Consolidado *nuevoConsolidado, int pos) {
     consolidados[pos] = nuevoConsolidado;
 }
 
-Consolidado *ProgramaAcademico::getConsolidado(int ano) {
-    if (consolidados.find(ano) != consolidados.end()) {
-        return consolidados[ano];
-    }
-    else {
-        return nullptr; 
-    }
+Consolidado *ProgramaAcademico::getConsolidado(int posicionConsolidado) {
+    return consolidados[posicionConsolidado];
 }
 
 ProgramaAcademico::~ProgramaAcademico() {
-    map <int, Consolidado*>:: iterator it; 
-    for (it = consolidados.begin(); it != consolidados.end(); ++it) {
-        delete it -> second; 
-        it-> second = nullptr; 
-        
+    for (Consolidado *consolidado : consolidados) {
+        delete consolidado;
     }
 }

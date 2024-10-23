@@ -38,7 +38,7 @@ public:
     void procesarDatosCsv(string &, string &);
     void calcularDatosExtra(bool);
     void buscarProgramas(bool, string &, int);
-    void imprimirTodosLosDatos(); // FUN DE PRUEBA
+
 };
 
 #endif

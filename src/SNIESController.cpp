@@ -28,13 +28,9 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
 {
     vector<int> codigosSnies;
     vector<vector<string>> programasAcademicosVector;
-    // int posicion; //unused
     int columna;
-    // cout << "antes leer programas csv" << endl;
     codigosSnies = gestorCsvObj.leerProgramasCsv(rutaProgramasCSV);
-    // cout << "despues leer programas csv" << endl;
     programasAcademicosVector = gestorCsvObj.leerArchivoPrimera(rutaAdmitidos, ano1, codigosSnies);
-    // cout << "despues leer archivos Primera" << endl;
     vector<string> etiquetasColumnas = programasAcademicosVector[0];
     map<string, int> columnasMap;
     for (int j = 0; j < etiquetasColumnas.size(); ++j)
@@ -512,43 +508,3 @@ void SNIESController::calcularDatosExtra(bool flag)
     }
 }
 
-void SNIESController::imprimirTodosLosDatos() // FUN DE PRUEBA
-{
-    // Iteramos sobre el mapa de programas académicos
-    for (auto it = programasAcademicos.begin(); it != programasAcademicos.end(); ++it)
-    {
-        ProgramaAcademico *programa = it->second;
-
-        cout << "Codigo de la Institución: " << programa->getCodigoDeLaInstitucion() << endl;
-        cout << "IES Padre: " << programa->getIesPadre() << endl;
-        cout << "Institucion de Educación Superior: " << programa->getInstitucionDeEducacionSuperiorIes() << endl;
-        cout << "Principal o Seccional: " << programa->getPrincipalOSeccional() << endl;
-        cout << "Sector IES: " << programa->getSectorIes() << endl;
-        cout << "Código SNIES del Programa: " << programa->getCodigoSniesDelPrograma() << endl;
-        cout << "Programa Académico: " << programa->getProgramaAcademico() << endl;
-        cout << "Nivel Académico: " << programa->getNivelAcademico() << endl;
-        cout << "Nivel de Formación: " << programa->getNivelDeFormacion() << endl;
-        cout << "Metodología: " << programa->getMetodologia() << endl;
-        cout << "Área de Conocimiento: " << programa->getAreaDeConocimiento() << endl;
-
-        // Iteramos sobre el mapa de consoliddos
-        for (int i = 0; i < Settings::COMUNAS_INFO_CONSOLIDADOS; ++i)
-        {
-            Consolidado *consolidado = programa->getConsolidado(i);
-            ;
-            if (consolidado != nullptr)
-            {
-                cout << "Consolidado del año " << it->first << ":" << endl; // it->first es la clave (el año)
-                cout << "    Sexo: " << consolidado->getSexo() << endl;
-                cout << "    Año: " << consolidado->getAno() << endl;
-                cout << "    Semestre: " << consolidado->getSemestre() << endl;
-                cout << "    Inscritos: " << consolidado->getInscritos() << endl;
-                cout << "    Admitidos: " << consolidado->getAdmitidos() << endl;
-                cout << "    Matriculados: " << consolidado->getMatriculados() << endl;
-                cout << "    Graduados: " << consolidado->getGraduados() << endl;
-                cout << "    Matriculados Primer Semestre: " << consolidado->getMatriculadosPrimerSemestre() << endl;
-            }
-        }
-        cout << "---------------------------------" << endl;
-    }
-}

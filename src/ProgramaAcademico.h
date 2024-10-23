@@ -45,10 +45,11 @@ class ProgramaAcademico
     string departamentoDeOfertaDelPrograma;
     int codigoDelMunicipioPrograma;
     string municipioDeOfertaDelPrograma;
+    vector<Consolidado *> consolidados;
     
     
 
-    map<int, Consolidado* > consolidados; 
+  
     
 
 
