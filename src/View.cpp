@@ -48,35 +48,62 @@ bool View::validarEntrada(string& entrada, bool esAno = false)
 {
     while (true)
     {
-        if (esAno)
+        try
         {
-            if (isConvetibleToInt(entrada))
+            if (esAno)
             {
-                return true;
+                if (isConvetibleToInt(entrada))
+                {
+                    return true;
+                }
+                else
+                {
+                    // Lanzar una excepción si la entrada no es convertible a un número entero
+                    throw invalid_argument("El valor ingresado no es un año válido.");
+                }
             }
             else
             {
-                cout << "El valor ingresado fue inválido. Por favor, ingrese un año válido: ";
+                cout << "Si ya hizo esto, escriba 'Y', de lo contrario 'N', y presione Enter: ";
                 cin >> entrada;
+                entrada[0] = static_cast<char>(tolower(entrada[0]));
+
+                if (entrada[0] == 'y' || entrada[0] == 'n')
+                {
+                    return entrada[0] == 'y';
+                }
+                else
+                {
+                    // Lanzar una excepción si la entrada no es 'Y' o 'N'
+                    throw invalid_argument("Entrada no válida. Debe ser 'Y' o 'N'.");
+                }
             }
         }
-        else
+        catch (const invalid_argument& e)
         {
-            cout << "Si ya hizo esto, escriba 'Y', de lo contrario 'N', y presione Enter: ";
-            cin >> entrada;
-            entrada[0] = static_cast<char>(tolower(entrada[0]));
+            // Captura de excepciones de argumentos inválidos
+            cerr << "Error: " << e.what() << endl;
 
-            if (entrada[0] == 'y' || entrada[0] == 'n')
+            // Pedir al usuario que ingrese nuevamente en caso de error
+            if (esAno)
             {
-                return entrada[0] == 'y';  
+                cout << "Por favor, ingrese un año válido: ";
             }
             else
             {
-                cout << "Entrada no válida. Por favor ingrese 'Y' o 'N'." << endl;
+                cout << "Por favor, ingrese 'Y' o 'N': ";
             }
+            cin >> entrada;
+        }
+        catch (...)
+        {
+            // Captura de cualquier otra excepción no específica
+            cerr << "Se produjo un error desconocido." << endl;
+            return false; // Salir en caso de error no manejado
         }
     }
 }
+
 
 bool View::mostrarPantallaBienvenido()
 {
@@ -87,34 +114,60 @@ bool View::mostrarPantallaBienvenido()
     cout << "Recuerde que para el correcto funcionamiento del programa tuvo que haber parametrizado" << endl;
     cout << "Antes la carpeta SNIES_EXTRACTOR en el disco duro C:, con sus respectivas carpetas inputs y outputs" << endl;
     cout << "y todos los archivo CSV del SNIES." << endl;
+
     string userAnswer;
-    if (validarEntrada(userAnswer, false))
+    try
     {
-        parametrizacionBool = true;
+        if (validarEntrada(userAnswer, false))
+        {
+            parametrizacionBool = true;
 
-        string userText;
-        cout << "A continuación se procesarán los datos de los programas académicos seleccionados en /programas.csv..." << endl;
+            string userText;
+            cout << "A continuación se procesarán los datos de los programas académicos seleccionados en /programas.csv..." << endl;
 
-        string anio1;
-        string ano2;
-        string anoAux;
-        cout << "Escriba el primer año de búsqueda: ";
-        cin >> anio1;
-        validarEntrada(anio1, true); 
-        cout << endl;
-        cout << "Escriba el segundo año de búsqueda: ";
-        cin >> ano2;
-        validarEntrada(ano2, true); 
-        cout << endl;
+            string anio1;
+            string ano2;
+            cout << "Escriba el primer año de búsqueda: ";
+            cin >> anio1;
+            if (!validarEntrada(anio1, true))
+            {
+                // Lanzar una excepción si el año no es válido
+                throw invalid_argument("El primer año ingresado no es válido.");
+            }
+            cout << endl;
+
+            cout << "Escriba el segundo año de búsqueda: ";
+            cin >> ano2;
+            if (!validarEntrada(ano2, true))
+            {
+                // Lanzar una excepción si el segundo año no es válido
+                throw invalid_argument("El segundo año ingresado no es válido.");
+            }
+            cout << endl;
 
             organizarAnios(anio1, ano2);
 
-        cout << "Procesando datos ..." << endl;
-        controlador.procesarDatosCsv(anio1, ano2);
-        cout << "Datos procesados con éxito!" << endl;
+            cout << "Procesando datos ..." << endl;
+            controlador.procesarDatosCsv(anio1, ano2);
+            cout << "Datos procesados con éxito!" << endl;
+        }
     }
+    catch (const invalid_argument& e)
+    {
+        // Manejo de excepciones de argumentos inválidos
+        cerr << "Error: " << e.what() << endl;
+        parametrizacionBool = false; // Indicar que la parametrización no se completó con éxito
+    }
+    catch (...)
+    {
+        // Manejo de cualquier otra excepción no específica
+        cerr << "Se produjo un error desconocido." << endl;
+        parametrizacionBool = false;
+    }
+
     return parametrizacionBool;
 }
+
 
 void View::salir()
 {
