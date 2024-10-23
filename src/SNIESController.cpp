@@ -47,6 +47,8 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
 
         programaAcademico->setIesPadre(stoi(programasAcademicosVector[i][columnasMap["IES_PADRE"]]));
 
+        programaAcademico->setInstitucionDeEducacionSuperiorIes(programasAcademicosVector[i][columnasMap["INSTITUCIÓN DE EDUCACIÓN SUPERIOR (IES)"]]);
+
         programaAcademico->setPrincipalOSeccional(programasAcademicosVector[i][columnasMap["TIPO IES"]]);
 
         programaAcademico->setIdSectorIes(stoi(programasAcademicosVector[i][columnasMap["ID SECTOR IES"]]));
@@ -317,40 +319,74 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
 void SNIESController::buscarProgramas(bool flag, string &palabraClave, int idComparacion)
 {
     list<ProgramaAcademico *> listaProgramas;
-    for (map<int, ProgramaAcademico *>::iterator it = programasAcademicos.begin(); it != programasAcademicos.end(); ++it)
+
+    try
     {
-        ProgramaAcademico *programa = it->second;
-        string nombre = programa->getProgramaAcademico();
-        int id = programa->getIdNivelDeFormacion();
-        if (nombre.find(palabraClave) != string::npos && id == idComparacion)
+        // Iterar sobre los programas académicos
+        for (map<int, ProgramaAcademico *>::iterator it = programasAcademicos.begin(); it != programasAcademicos.end(); ++it)
         {
-            listaProgramas.push_back(programa);
-            // codigo SNIES, nombre del programa, codigo de la institucion, nombre de la institucion y metodología
-            cout << programa->getCodigoSniesDelPrograma() << ";" << programa->getProgramaAcademico() << ";" << programa->getCodigoDeLaInstitucion() << ";" << programa->getInstitucionDeEducacionSuperiorIes() << ";" << programa->getMetodologia() << endl;
+            ProgramaAcademico *programa = it->second;
+            string nombre = programa->getProgramaAcademico();
+            int id = programa->getIdNivelDeFormacion();
+
+            // Verificar si el nombre contiene la palabra clave y si el ID coincide
+            if (nombre.find(palabraClave) != string::npos && id == idComparacion)
+            {
+                listaProgramas.push_back(programa);
+                // Mostrar los detalles del programa
+                cout << programa->getCodigoSniesDelPrograma() << ";" << programa->getProgramaAcademico() << ";" << programa->getCodigoDeLaInstitucion() << ";" << programa->getInstitucionDeEducacionSuperiorIes() << ";" << programa->getMetodologia() << endl;
+            }
+        }
+
+        // Si la bandera está activa, preguntar sobre el tipo de archivo a generar
+        if (flag)
+        {
+            int opcion;
+            cout << "Desea generar un archivo CSV (1), Desea generar un archivo TXT (2) o Desea generar un archivo JSON (3)" << endl;
+            cin >> opcion;
+
+            if (opcion < 1 || opcion > 3)
+            {
+                throw invalid_argument("Opción no válida. Debe ser 1, 2 o 3.");
+            }
+
+            // Generar el archivo según la opción seleccionada
+            if (opcion == 1)
+            {
+                GestorCsv *gestorObjAux = new GestorCsv();
+                gestorObjAux->crearArchivoBuscados(rutaOutput, listaProgramas, etiquetasColumnas);
+            }
+            else if (opcion == 2)
+            {
+                GestorTxt *gestorObjAux = new GestorTxt();
+                gestorObjAux->crearArchivoBuscados(rutaOutput, listaProgramas, etiquetasColumnas);
+            }
+            else
+            {
+                GestorJson *gestorObjAux = new GestorJson();
+                gestorObjAux->crearArchivoBuscados(rutaOutput, listaProgramas, etiquetasColumnas);
+            }
         }
     }
-
-    if (flag)
+    catch (const invalid_argument &e)
     {
-        int opcion;
-        cout << "Desea generar un archivo CSV (1), Desea generar un archivo TXT (2) o Desea generar un archivo JSON (3)" << endl;
-        cin >> opcion;
-
-        if (opcion == 1)
-        {
-            GestorCsv *gestorObjAux = new GestorCsv();
-            gestorObjAux->crearArchivoBuscados(rutaOutput, listaProgramas, etiquetasColumnas);
-        }
-        else if (opcion == 2)
-        {
-            GestorTxt *gestorObjAux = new GestorTxt();
-            gestorObjAux->crearArchivoBuscados(rutaOutput, listaProgramas, etiquetasColumnas);
-        }
-        else
-        {
-            GestorJson *gestorObjAux = new GestorJson();
-            gestorObjAux->crearArchivoBuscados(rutaOutput, listaProgramas, etiquetasColumnas);
-        }
+        // Captura de errores relacionados con argumentos no válidos
+        cerr << "Error: " << e.what() << endl;
+    }
+    catch (const bad_alloc &e)
+    {
+        // Captura de errores de asignación de memoria
+        cerr << "Error de memoria: " << e.what() << endl;
+    }
+    catch (const exception &e)
+    {
+        // Captura de cualquier otra excepción estándar
+        cerr << "Se produjo un error: " << e.what() << endl;
+    }
+    catch (...)
+    {
+        // Captura de cualquier otra excepción no especificada
+        cerr << "Se produjo un error desconocido." << endl;
     }
 }
 
@@ -507,4 +543,6 @@ void SNIESController::calcularDatosExtra(bool flag)
         }
     }
 }
+
+
 

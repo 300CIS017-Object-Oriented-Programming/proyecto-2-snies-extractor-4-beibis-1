@@ -5,13 +5,14 @@ View::View()
     // NEW quitar estas variables de aquí y del constructor del SNIESController
     //  estas constantes las leerá el SNIESController del archivo de Settings.h
     //  Completar el archivo con el resto de constantes necesarias
-    string ruta1 = string("inputs/programas.csv");
-    string ruta2 = string("inputs/admitidos");
-    string ruta3 = string("inputs/graduados");
-    string ruta4 = string("inputs/inscritos");
-    string ruta5 = string("inputs/matriculados");
-    string ruta6 = string("inputs/matriculadosPrimerSemestre");
-    string ruta7 = string("outputs/");
+    string ruta1 = "C:/Users/Usuario/Documents/POO/aquiii/proyecto-2-snies-extractor-4-beibis-1/docs/inputs/programas.csv";
+    string ruta2 = "C:/Users/Usuario/Documents/POO/aquiii/proyecto-2-snies-extractor-4-beibis-1/docs/inputs/admitidos";
+    string ruta3 = "C:/Users/Usuario/Documents/POO/aquiii/proyecto-2-snies-extractor-4-beibis-1/docs/inputs/graduados";
+    string ruta4 = "C:/Users/Usuario/Documents/POO/aquiii/proyecto-2-snies-extractor-4-beibis-1/docs/inputs/inscritos";
+    string ruta5 = "C:/Users/Usuario/Documents/POO/aquiii/proyecto-2-snies-extractor-4-beibis-1/docs/inputs/matriculados";
+    string ruta6 = "C:/Users/Usuario/Documents/POO/aquiii/proyecto-2-snies-extractor-4-beibis-1/docs/inputs/matriculadosPrimerSemestre";
+    string ruta7 = "C:/Users/Usuario/Documents/POO/aquiii/proyecto-2-snies-extractor-4-beibis-1/docs/outputs/";
+
     controlador = SNIESController(ruta1, ruta2, ruta3, ruta4, ruta5, ruta6, ruta7);
 }
 
@@ -43,41 +44,6 @@ bool View::isConvetibleToInt(const string &str)
     }
 }
 
-
-bool View::validarEntrada(string& entrada, bool esAno = false)
-{
-    while (true)
-    {
-        if (esAno)
-        {
-            if (isConvetibleToInt(entrada))
-            {
-                return true;
-            }
-            else
-            {
-                cout << "El valor ingresado fue inválido. Por favor, ingrese un año válido: ";
-                cin >> entrada;
-            }
-        }
-        else
-        {
-            cout << "Si ya hizo esto, escriba 'Y', de lo contrario 'N', y presione Enter: ";
-            cin >> entrada;
-            entrada[0] = static_cast<char>(tolower(entrada[0]));
-
-            if (entrada[0] == 'y' || entrada[0] == 'n')
-            {
-                return entrada[0] == 'y';  
-            }
-            else
-            {
-                cout << "Entrada no válida. Por favor ingrese 'Y' o 'N'." << endl;
-            }
-        }
-    }
-}
-
 bool View::mostrarPantallaBienvenido()
 {
     bool parametrizacionBool = false;
@@ -87,32 +53,57 @@ bool View::mostrarPantallaBienvenido()
     cout << "Recuerde que para el correcto funcionamiento del programa tuvo que haber parametrizado" << endl;
     cout << "Antes la carpeta SNIES_EXTRACTOR en el disco duro C:, con sus respectivas carpetas inputs y outputs" << endl;
     cout << "y todos los archivo CSV del SNIES." << endl;
+
     string userAnswer;
-    if (validarEntrada(userAnswer, false))
+    try
     {
-        parametrizacionBool = true;
+        if (validarEntrada(userAnswer, false))
+        {
+            parametrizacionBool = true;
 
-        string userText;
-        cout << "A continuación se procesarán los datos de los programas académicos seleccionados en /programas.csv..." << endl;
+            string userText;
+            cout << "A continuación se procesarán los datos de los programas académicos seleccionados en /programas.csv..." << endl;
 
-        string anio1;
-        string ano2;
-        string anoAux;
-        cout << "Escriba el primer año de búsqueda: ";
-        cin >> anio1;
-        validarEntrada(anio1, true); 
-        cout << endl;
-        cout << "Escriba el segundo año de búsqueda: ";
-        cin >> ano2;
-        validarEntrada(ano2, true); 
-        cout << endl;
+            string anio1;
+            string ano2;
+            cout << "Escriba el primer año de búsqueda: ";
+            cin >> anio1;
+            if (!validarEntrada(anio1, true))
+            {
+                // Lanzar una excepción si el año no es válido
+                throw invalid_argument("El primer año ingresado no es válido.");
+            }
+            cout << endl;
+
+            cout << "Escriba el segundo año de búsqueda: ";
+            cin >> ano2;
+            if (!validarEntrada(ano2, true))
+            {
+                // Lanzar una excepción si el segundo año no es válido
+                throw invalid_argument("El segundo año ingresado no es válido.");
+            }
+            cout << endl;
 
             organizarAnios(anio1, ano2);
 
-        cout << "Procesando datos ..." << endl;
-        controlador.procesarDatosCsv(anio1, ano2);
-        cout << "Datos procesados con éxito!" << endl;
+            cout << "Procesando datos ..." << endl;
+            controlador.procesarDatosCsv(anio1, ano2);
+            cout << "Datos procesados con éxito!" << endl;
+        }
     }
+    catch (const invalid_argument& e)
+    {
+        // Manejo de excepciones de argumentos inválidos
+        cerr << "Error: " << e.what() << endl;
+        parametrizacionBool = false; // Indicar que la parametrización no se completó con éxito
+    }
+    catch (...)
+    {
+        // Manejo de cualquier otra excepción no específica
+        cerr << "Se produjo un error desconocido." << endl;
+        parametrizacionBool = false;
+    }
+
     return parametrizacionBool;
 }
 
@@ -124,6 +115,66 @@ void View::salir()
 }
 
 
+bool View::validarEntrada(string& entrada, bool esAno = false)
+{
+    while (true)
+    {
+        try
+        {
+            if (esAno)
+            {
+                if (isConvetibleToInt(entrada))
+                {
+                    return true;
+                }
+                else
+                {
+                    // Lanzar una excepción si la entrada no es convertible a un número entero
+                    throw invalid_argument("El valor ingresado no es un año válido.");
+                }
+            }
+            else
+            {
+                cout << "Si ya hizo esto, escriba 'Y', de lo contrario 'N', y presione Enter: ";
+                cin >> entrada;
+                entrada[0] = static_cast<char>(tolower(entrada[0]));
+
+                if (entrada[0] == 'y' || entrada[0] == 'n')
+                {
+                    return entrada[0] == 'y';
+                }
+                else
+                {
+                    // Lanzar una excepción si la entrada no es 'Y' o 'N'
+                    throw invalid_argument("Entrada no válida. Debe ser 'Y' o 'N'.");
+                }
+            }
+        }
+        catch (const invalid_argument& e)
+        {
+            // Captura de excepciones de argumentos inválidos
+            cerr << "Error: " << e.what() << endl;
+
+            // Pedir al usuario que ingrese nuevamente en caso de error
+            if (esAno)
+            {
+                cout << "Por favor, ingrese un año válido: ";
+            }
+            else
+            {
+                cout << "Por favor, ingrese 'Y' o 'N': ";
+            }
+            cin >> entrada;
+        }
+        catch (...)
+        {
+            // Captura de cualquier otra excepción no específica
+            cerr << "Se produjo un error desconocido." << endl;
+            return false; // Salir en caso de error no manejado
+        }
+    }
+}
+
 bool View:: validarEntradaYN() {
     char opcion;
     bool flag = false;
@@ -134,11 +185,11 @@ bool View:: validarEntradaYN() {
 
         if (opcion == 'y') {
             flag = true;
-        } 
+        }
         else if (opcion == 'n') {
-            flag = false; 
+            flag = false;
             break;
-        } 
+        }
         else {
             cout << "Entrada inválida. Por favor ingrese 'Y' o 'N': " << endl;
         }
@@ -146,7 +197,6 @@ bool View:: validarEntradaYN() {
 
     return flag;
 }
-
 
 
 void View::mostrarDatosExtra() {
