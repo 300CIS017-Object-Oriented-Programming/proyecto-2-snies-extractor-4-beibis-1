@@ -1,6 +1,6 @@
 #include "GestorCsv.h"
-// FIXME: LA LECTURA DE ARCHIVOS CON GETLINE FUNCIONA HORRIBLEMENTE, NO TENEMOS IDEA DE POR QUÉ
-vector<int> GestorCsv::leerProgramasCsv(string &ruta)
+
+vector<int> GestorCsv::leerProgramasCsv(const string &ruta)
 {
     vector<int> codigosSniesRetorno;
     ifstream archivoProgramasCsv(ruta);
@@ -18,7 +18,7 @@ vector<int> GestorCsv::leerProgramasCsv(string &ruta)
         while (getline(archivoProgramasCsv, linea))
         {
             stringstream streamLinea(linea);
-            getline(streamLinea, dato, ';');
+            getline(streamLinea, dato, Settings:: DELIMITADOR);
             codigosSniesRetorno.push_back(stoi(dato));
         }
     }
@@ -41,88 +41,101 @@ vector<vector<string>> GestorCsv::leerArchivoPrimera(string &rutaBase, string &a
         string dato;
         vector<string> vectorFila;
         stringstream streamFila;
-        int columna;
+        vector<int> posicionesInteres;
         vector<int>::iterator it;
 
-        // Primera iteracion del ciclo para guardar las etiquetas
         getline(archivoPrimero, fila);
-        vectorFila = vector<string>(39);
         streamFila = stringstream(fila);
-        columna = 0;
-        while ((getline(streamFila, dato, ';')))
+        int indiceColumna = 0;
+
+        while (getline(streamFila, dato, Settings:: DELIMITADOR))
         {
-            vectorFila[columna] = dato;
-            columna++;
+            if (dato == "CÓDIGO DE LA INSTITUCIÓN" ||
+                dato == "IES_PADRE" ||
+                dato == "INSTITUCIÓN DE EDUCACIÓN SUPERIOR (IES)" ||
+                dato == "TIPO IES" ||
+                dato == "ID SECTOR IES" ||
+                dato == "SECTOR IES" ||
+                dato == "ID CARACTER" ||
+                dato == "CARACTER IES" ||
+                dato == "CÓDIGO DEL DEPARTAMENTO (IES)" ||
+                dato == "DEPARTAMENTO DE DOMICILIO DE LA IES" ||
+                dato == "CÓDIGO DEL MUNICIPIO IES" ||
+                dato == "MUNICIPIO DE DOMICILIO DE LA IES" ||
+                dato == "CÓDIGO SNIES DEL PROGRAMA" ||
+                dato == "PROGRAMA ACADÉMICO" ||
+                dato == "NÚCLEO BÁSICO DEL CONOCIMIENTO (NBC)" ||
+                dato == "ID NIVEL ACADÉMICO" ||
+                dato == "NIVEL ACADÉMICO" ||
+                dato == "ID NIVEL DE FORMACIÓN" ||
+                dato == "NIVEL DE FORMACIÓN" ||
+                dato == "ID METODOLOGÍA" ||
+                dato == "METODOLOGÍA" ||
+                dato == "ID ÁREA DE CONOCIMIENTO" ||
+                dato == "ÁREA DE CONOCIMIENTO" ||
+                dato == "ID NÚCLEO" ||
+                dato == "ID CINE CAMPO AMPLIO" ||
+                dato == "DESC CINE CAMPO AMPLIO" ||
+                dato == "ID CINE CAMPO ESPECIFICO" ||
+                dato == "DESC CINE CAMPO ESPECIFICO" ||
+                dato == "ID CINE CODIGO DETALLADO" ||
+                dato == "DESC CINE CODIGO DETALLADO" ||
+                dato == "CÓDIGO DEL DEPARTAMENTO (PROGRAMA)" ||
+                dato == "DEPARTAMENTO DE OFERTA DEL PROGRAMA" ||
+                dato == "CÓDIGO DEL MUNICIPIO (PROGRAMA)" ||
+                dato == "MUNICIPIO DE OFERTA DEL PROGRAMA" ||
+                dato == "ID SEXO" ||
+                dato == "SEXO" ||
+                dato == "AÑO" ||
+                dato == "SEMESTRE" ||
+                dato == "ADMITIDOS")
+            {
+
+                posicionesInteres.push_back(indiceColumna);
+                vectorFila.push_back(dato);
+            }
+            indiceColumna++;
         }
+
         matrizResultado.push_back(vectorFila);
 
-        // Leer el resto del archivo
         while (getline(archivoPrimero, fila))
         {
+            vectorFila.clear();
             streamFila = stringstream(fila);
-            columna = 0;
-            while ((getline(streamFila, dato, ';')) && (columna < 13))
+            indiceColumna = 0;
+            vector<string> filaTemporal;
+
+            while (getline(streamFila, dato, Settings:: DELIMITADOR))
             {
-                vectorFila[columna] = dato;
-                columna++;
+                filaTemporal.push_back(dato);
+                indiceColumna++;
             }
 
-            // Verificamos que la fila no sea una fila de error
-            if (vectorFila[12] != "Sin programa especifico")
+            if (filaTemporal.size() > Settings::COLUMNA_12 && filaTemporal[12] != "Sin programa especifico")
             {
-                it = find(codigosSnies.begin(), codigosSnies.end(), stoi(vectorFila[12]));
+                it = find(codigosSnies.begin(), codigosSnies.end(), stoi(filaTemporal[12]));
             }
             else
             {
                 it = codigosSnies.end();
             }
 
-            // Verificar si hace parte de los programas que me interesan
-            if (it != codigosSnies.end()) // Caso donde si estaba dentro de los programas que me interesan
+            if (it != codigosSnies.end())
             {
-                // Termino de leer y guardar primera fila
-                vectorFila[columna] = dato; // Guardamos el dato que habiamos geteado justo antes de hacer la verificacion
-                columna++;
-                while ((getline(streamFila, dato, ';')))
+                for (int pos : posicionesInteres)
                 {
-                    vectorFila[columna] = dato;
-                    columna++;
+                    if (pos < filaTemporal.size())
+                    {
+                        vectorFila.push_back(filaTemporal[pos]);
+                    }
                 }
                 matrizResultado.push_back(vectorFila);
-
-                // Leo y guardo filas restantes
-                for (int j = 0; j < 3; j++)
-                {
-                    getline(archivoPrimero, fila);
-                    streamFila = stringstream(fila);
-                    columna = 0;
-                    while ((getline(streamFila, dato, ';')))
-                    {
-                        vectorFila[columna] = dato;
-                        columna++;
-                    }
-                    matrizResultado.push_back(vectorFila);
-                }
             }
-            // Si es de los programas que no me interesan, sigo a la siguiente fila, sin guardar la fila en la matriz de resultados
         }
     }
 
     archivoPrimero.close();
-
-    /*// Imprimir matriz resultado para verificaciones
-    for (int h = 0; h < matrizResultado.size(); h++)
-    {
-        for (int k = 0; k < matrizResultado[h].size(); k++)
-        {
-            cout << matrizResultado[h][k];
-            if (k != (matrizResultado[h].size() - 1))
-            {
-                cout << ";";
-            }
-        }
-        cout << endl;
-    }*/
     return matrizResultado;
 }
 
@@ -131,108 +144,76 @@ vector<vector<string>> GestorCsv::leerArchivoSegunda(string &rutaBase, string &a
     vector<vector<string>> matrizResultado;
     string rutaCompleta = rutaBase + ano + ".csv";
     ifstream archivoSegundo(rutaCompleta);
+
     if (!(archivoSegundo.is_open()))
     {
         cout << "Archivo " << rutaCompleta << " no se pudo abrir correctamente" << endl;
+        return matrizResultado;
     }
-    else
+
+    string fila;
+    string dato;
+    vector<string> vectorFila;
+    stringstream streamFila;
+    vector<int> posicionesInteres;
+    vector<int>::iterator it;
+
+    getline(archivoSegundo, fila);
+    streamFila = stringstream(fila);
+    int indiceColumna = 0;
+
+    while (getline(streamFila, dato, Settings:: DELIMITADOR))
     {
-        string fila;
-        string dato;
-        vector<string> vectorFila(6);
-        stringstream streamFila;
-        int columnaArchivo;
-        int columnaVector;
-        vector<int>::iterator it;
-
-        // Nos saltamos las etiquetas para no interferir en el bucle
-        getline(archivoSegundo, fila);
-
-        // Leemos las filas
-        while (getline(archivoSegundo, fila))
+        if (dato == "CÓDIGO SNIES DEL PROGRAMA" ||
+            dato == "ID SEXO" ||
+            dato == "SEXO" ||
+            dato == "AÑO" ||
+            dato == "SEMESTRE" ||
+            dato == "ADMITIDOS")
         {
-            streamFila = stringstream(fila);
-            columnaArchivo = 0;
-            columnaVector = 0;
-            while ((getline(streamFila, dato, ';')) && (columnaArchivo < 13))
-            {
-                if (columnaArchivo == 12)
-                {
-                    vectorFila[columnaVector] = dato;
-                    columnaVector++;
-                }
-                columnaArchivo++;
-            }
+            posicionesInteres.push_back(indiceColumna);
+            vectorFila.push_back(dato);
+        }
+        indiceColumna++;
+    }
 
-            // Verificamos que la fila no sea una fila de error
-            if (vectorFila[0] != "Sin programa especifico")
-            {
-                it = find(codigosSnies.begin(), codigosSnies.end(), stoi(vectorFila[0]));
-            }
-            else
-            {
-                it = codigosSnies.end();
-            }
+    while (getline(archivoSegundo, fila))
+    {
+        vectorFila.clear();
+        streamFila = stringstream(fila);
+        indiceColumna = 0;
+        vector<string> filaTemporal;
 
-            // Verificar si hace parte de los programas que me interesan
-            if (it != codigosSnies.end()) // Caso cuando SI es parte de los que me interesan
-            {
-                // Termino de leer y guardar primera fila
-                columnaArchivo++; // Esto se debe a la iteracion en que hacemos getline sin subirle a la columaArchivo porque nos salimos del bucle
-                while (getline(streamFila, dato, ';'))
-                {
-                    if (columnaArchivo >= 34)
-                    {
-                        vectorFila[columnaVector] = dato;
-                        columnaVector++;
-                    }
-                    columnaArchivo++;
-                }
-                matrizResultado.push_back(vectorFila);
+        while (getline(streamFila, dato, Settings:: DELIMITADOR))
+        {
+            filaTemporal.push_back(dato);
+            indiceColumna++;
+        }
 
-                // Leer las otras 3 filas
-                for (int i = 0; i < 3; i++)
+        if (filaTemporal.size() > Settings::COLUMNA_12 && filaTemporal[12] != "Sin programa especifico")
+        {
+            it = find(codigosSnies.begin(), codigosSnies.end(), stoi(filaTemporal[12]));
+        }
+        else
+        {
+            it = codigosSnies.end();
+        }
+
+        if (it != codigosSnies.end())
+        {
+
+            for (int pos : posicionesInteres)
+            {
+                if (pos < filaTemporal.size())
                 {
-                    getline(archivoSegundo, fila);
-                    streamFila = stringstream(fila);
-                    columnaArchivo = 0;
-                    columnaVector = 0;
-                    while (getline(streamFila, dato, ';'))
-                    {
-                        if ((columnaArchivo >= 34) || (columnaArchivo == 12))
-                        {
-                            vectorFila[columnaVector] = dato;
-                            columnaVector++;
-                        }
-                        columnaArchivo++;
-                    }
-                    matrizResultado.push_back(vectorFila);
+                    vectorFila.push_back(filaTemporal[pos]);
                 }
             }
-            // Cuando no me interesa no hago nada
+            matrizResultado.push_back(vectorFila);
         }
     }
 
-    /*
-    Ejemplo de matrizResultado: (No tendría las etiquetas incluidas)
-    CodigoSnies;IdSexo;SexoString;Ano;Semestre;Admitidos
-    1; 1; Masculino; 2022; 1, 56
-    */
     archivoSegundo.close();
-
-    /*// Imprimir matriz resultado para verificaciones
-    for (int h = 0; h < matrizResultado.size(); h++)
-    {
-        for (int k = 0; k < matrizResultado[h].size(); k++)
-        {
-            cout << matrizResultado[h][k];
-            if (k != (matrizResultado[h].size() - 1))
-            {
-                cout << ";";
-            }
-        }
-        cout << endl;
-    }*/
     return matrizResultado;
 }
 
@@ -264,7 +245,7 @@ vector<vector<string>> GestorCsv::leerArchivo(string &rutaBase, string &ano, vec
             streamFila = stringstream(fila);
             columnaArchivo = 0;
             columnaVector = 0;
-            while ((getline(streamFila, dato, ';')) && (columnaArchivo < (colmunaCodigoSnies + 1)))
+            while ((getline(streamFila, dato, Settings:: DELIMITADOR)) && (columnaArchivo < (colmunaCodigoSnies + 1)))
             {
                 if (columnaArchivo == colmunaCodigoSnies)
                 {
@@ -288,20 +269,20 @@ vector<vector<string>> GestorCsv::leerArchivo(string &rutaBase, string &ano, vec
             if (it != codigosSnies.end()) // Caso cuando SI es parte de los que me interesan
             {
                 // Terminar de leer primera fila
-                while (getline(streamFila, dato, ';'))
+                while (getline(streamFila, dato, Settings:: DELIMITADOR))
                 {
                 }
                 vectorFila[columnaVector] = dato;
                 matrizResultado.push_back(vectorFila);
 
                 // Leer las otras 3 filas
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < Settings::FILAS_RESTANTES; i++)
                 {
                     getline(archivoSegundo, fila);
                     streamFila = stringstream(fila);
                     columnaArchivo = 0;
                     columnaVector = 0;
-                    while (getline(streamFila, dato, ';'))
+                    while (getline(streamFila, dato, Settings:: DELIMITADOR))
                     {
                         if (columnaArchivo == colmunaCodigoSnies)
                         {
@@ -314,40 +295,16 @@ vector<vector<string>> GestorCsv::leerArchivo(string &rutaBase, string &ano, vec
                     matrizResultado.push_back(vectorFila);
                 }
             }
-            else // Caso cuando NO es parte de los que me interesan
-            {
-                /*// Saltarme las 3 siguientes filas con mismo codigo Snies
-                for (int j = 0; j < 3; j++)
-                {
-                    getline(archivoSegundo, fila);
-                }*/
-            }
+           
         }
     }
 
-    /*
-    Ejemplo de matrizResultado: (No tendría las etiquetas incluidas)
-    CodigoSnies;DatoExtradelArchivo
-    12;5
-    */
     archivoSegundo.close();
-    /*// Imprimir matriz resultado para verificaciones
-    for (int h = 0; h < matrizResultado.size(); h++)
-    {
-        for (int k = 0; k < matrizResultado[h].size(); k++)
-        {
-            cout << matrizResultado[h][k];
-            if (k != (matrizResultado[h].size() - 1))
-            {
-                cout << ";";
-            }
-        }
-        cout << endl;
-    }*/
+   
     return matrizResultado;
 }
 
-bool GestorCsv::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> etiquetasColumnas)
+bool GestorCsv::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> &etiquetasColumnas)
 {
     // Este bool nos ayudará a saber si se creo exitosamente el archivo
     bool estadoCreacion = false;
@@ -358,63 +315,62 @@ bool GestorCsv::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapade
         // Imprimimos en el archivo las etiquetas (Primera fila)
         for (int i = 0; i < etiquetasColumnas.size(); i++)
         {
-            archivoResultados << etiquetasColumnas[i] << ";";
+            archivoResultados << etiquetasColumnas[i] << Settings:: DELIMITADOR;
         }
         archivoResultados << "GRADUADOS;INSCRITOS;MATRICULADOS;NEOS" << endl;
 
-        map<int, ProgramaAcademico *>::iterator it;
         // Leemos todos los programas del mapa para imprimirlos en el archivo
-        for (it = mapadeProgramasAcademicos.begin(); it != mapadeProgramasAcademicos.end(); it++)
+        for (map<int, ProgramaAcademico *>::iterator it = mapadeProgramasAcademicos.begin(); it != mapadeProgramasAcademicos.end(); it++)
         {
             // Imprimimos cada uno de los 8 consolidados por programa
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < Settings::COLUMNAS_INFO_CONSOLIDADOS; i++)
             {
                 // Imprimimos toda la información base del programa academico
-                archivoResultados << (it->second)->getCodigoDeLaInstitucion() << ";";
-                archivoResultados << (it->second)->getIesPadre() << ";";
-                archivoResultados << (it->second)->getInstitucionDeEducacionSuperiorIes() << ";";
-                archivoResultados << (it->second)->getPrincipalOSeccional() << ";";
-                archivoResultados << (it->second)->getIdSectorIes() << ";";
-                archivoResultados << (it->second)->getSectorIes() << ";";
-                archivoResultados << (it->second)->getIdCaracter() << ";";
-                archivoResultados << (it->second)->getCaracterIes() << ";";
-                archivoResultados << (it->second)->getCodigoDelDepartamentoIes() << ";";
-                archivoResultados << (it->second)->getDepartamentoDeDomicilioDeLaIes() << ";";
-                archivoResultados << (it->second)->getCodigoDelMunicipioIes() << ";";
-                archivoResultados << (it->second)->getMunicipioDeDomicilioDeLaIes() << ";";
-                archivoResultados << (it->second)->getCodigoSniesDelPrograma() << ";";
-                archivoResultados << (it->second)->getProgramaAcademico() << ";";
-                archivoResultados << (it->second)->getIdNivelAcademico() << ";";
-                archivoResultados << (it->second)->getNivelAcademico() << ";";
-                archivoResultados << (it->second)->getIdNivelDeFormacion() << ";";
-                archivoResultados << (it->second)->getNivelDeFormacion() << ";";
-                archivoResultados << (it->second)->getIdMetodologia() << ";";
-                archivoResultados << (it->second)->getMetodologia() << ";";
-                archivoResultados << (it->second)->getIdArea() << ";";
-                archivoResultados << (it->second)->getAreaDeConocimiento() << ";";
-                archivoResultados << (it->second)->getIdNucleo() << ";";
-                archivoResultados << (it->second)->getNucleoBasicoDelConocimientoNbc() << ";";
-                archivoResultados << (it->second)->getIdCineCampoAmplio() << ";";
-                archivoResultados << (it->second)->getDescCineCampoAmplio() << ";";
-                archivoResultados << (it->second)->getIdCineCampoEspecifico() << ";";
-                archivoResultados << (it->second)->getDescCineCampoEspecifico() << ";";
-                archivoResultados << (it->second)->getIdCineCodigoDetallado() << ";";
-                archivoResultados << (it->second)->getDescCineCodigoDetallado() << ";";
-                archivoResultados << (it->second)->getCodigoDelDepartamentoPrograma() << ";";
-                archivoResultados << (it->second)->getDepartamentoDeOfertaDelPrograma() << ";";
-                archivoResultados << (it->second)->getCodigoDelMunicipioPrograma() << ";";
-                archivoResultados << (it->second)->getMunicipioDeOfertaDelPrograma() << ";";
+                archivoResultados << (it->second)->getCodigoDeLaInstitucion() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getIesPadre() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getInstitucionDeEducacionSuperiorIes() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getPrincipalOSeccional() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getIdSectorIes() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getSectorIes() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getIdCaracter() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getCaracterIes() << Settings::DELIMITADOR;
+                archivoResultados << (it->second)->getCodigoDelDepartamentoIes() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getDepartamentoDeDomicilioDeLaIes() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getCodigoDelMunicipioIes() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getMunicipioDeDomicilioDeLaIes() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getCodigoSniesDelPrograma() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getProgramaAcademico() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getIdNivelAcademico() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getNivelAcademico() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getIdNivelDeFormacion() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getNivelDeFormacion() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getIdMetodologia() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getMetodologia() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getIdArea() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getAreaDeConocimiento() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getIdNucleo() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getNucleoBasicoDelConocimientoNbc() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getIdCineCampoAmplio() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getDescCineCampoAmplio() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getIdCineCampoEspecifico() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getDescCineCampoEspecifico() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getIdCineCodigoDetallado() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getDescCineCodigoDetallado() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getCodigoDelDepartamentoPrograma() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getDepartamentoDeOfertaDelPrograma() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getCodigoDelMunicipioPrograma() << Settings:: DELIMITADOR;
+                archivoResultados << (it->second)->getMunicipioDeOfertaDelPrograma() << Settings:: DELIMITADOR;
 
                 // Imprimimos la información del consolidado: (ID SEXO;SEXO;AÑO;SEMESTRE;ADMITIDOS;GRADUADOS;INSCRITOS;MATRICULADOS;NEOS)
                 Consolidado *consolidadoActual = (it->second)->getConsolidado(i);
-                archivoResultados << consolidadoActual->getIdSexo() << ";";
-                archivoResultados << consolidadoActual->getSexo() << ";";
-                archivoResultados << consolidadoActual->getAno() << ";";
-                archivoResultados << consolidadoActual->getSemestre() << ";";
-                archivoResultados << consolidadoActual->getAdmitidos() << ";";
-                archivoResultados << consolidadoActual->getGraduados() << ";";
-                archivoResultados << consolidadoActual->getInscritos() << ";";
-                archivoResultados << consolidadoActual->getMatriculados() << ";";
+                archivoResultados << consolidadoActual->getIdSexo() << Settings:: DELIMITADOR;
+                archivoResultados << consolidadoActual->getSexo() << Settings:: DELIMITADOR;
+                archivoResultados << consolidadoActual->getAno() << Settings:: DELIMITADOR;
+                archivoResultados << consolidadoActual->getSemestre() << Settings:: DELIMITADOR;
+                archivoResultados << consolidadoActual->getAdmitidos() << Settings:: DELIMITADOR;
+                archivoResultados << consolidadoActual->getGraduados() << Settings:: DELIMITADOR;
+                archivoResultados << consolidadoActual->getInscritos() << Settings:: DELIMITADOR;
+                archivoResultados << consolidadoActual->getMatriculados() << Settings:: DELIMITADOR;
                 archivoResultados << consolidadoActual->getMatriculadosPrimerSemestre();
                 // Saltamos de linea para la siguiente fila
                 archivoResultados << endl;
@@ -423,7 +379,7 @@ bool GestorCsv::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapade
 
         // Cambiamos el valor del booleano si logramos llegar hasta este punto
         estadoCreacion = true;
-        // Imprimimos ruta donde quedo el archivo
+
         cout << "Archivo Creado en: " << rutaCompleta << endl;
     }
 
@@ -431,7 +387,7 @@ bool GestorCsv::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapade
     return estadoCreacion;
 }
 
-bool GestorCsv::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &programasBuscados, vector<string> etiquetasColumnas)
+bool GestorCsv::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &programasBuscados, vector<string> &etiquetasColumnas)
 {
     // Este bool nos ayudará a saber si se creo exitosamente el archivo
     bool estadoCreacion = false;
@@ -443,7 +399,7 @@ bool GestorCsv::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &pr
         // Imprimimos en el archivo las etiquetas (Primera fila)
         for (int i = 0; i < etiquetasColumnas.size(); i++)
         {
-            archivoBuscados << etiquetasColumnas[i] << ";";
+            archivoBuscados << etiquetasColumnas[i] << Settings:: DELIMITADOR;
         }
         archivoBuscados << "GRADUADOS;INSCRITOS;MATRICULADOS;NEOS" << endl;
 
@@ -452,54 +408,54 @@ bool GestorCsv::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &pr
         for (it = programasBuscados.begin(); it != programasBuscados.end(); it++)
         {
             // Imprimimos los 8 consolidados del programa
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < Settings::COLUMNAS_INFO_CONSOLIDADOS; i++)
             {
                 // Imprimimos la informacion base del programa
-                archivoBuscados << (*it)->getCodigoDeLaInstitucion() << ";";
-                archivoBuscados << (*it)->getIesPadre() << ";";
-                archivoBuscados << (*it)->getInstitucionDeEducacionSuperiorIes() << ";";
-                archivoBuscados << (*it)->getPrincipalOSeccional() << ";";
-                archivoBuscados << (*it)->getIdSectorIes() << ";";
-                archivoBuscados << (*it)->getSectorIes() << ";";
-                archivoBuscados << (*it)->getIdCaracter() << ";";
-                archivoBuscados << (*it)->getCaracterIes() << ";";
-                archivoBuscados << (*it)->getCodigoDelDepartamentoIes() << ";";
-                archivoBuscados << (*it)->getDepartamentoDeDomicilioDeLaIes() << ";";
-                archivoBuscados << (*it)->getCodigoDelMunicipioIes() << ";";
-                archivoBuscados << (*it)->getMunicipioDeDomicilioDeLaIes() << ";";
-                archivoBuscados << (*it)->getCodigoSniesDelPrograma() << ";";
-                archivoBuscados << (*it)->getProgramaAcademico() << ";";
-                archivoBuscados << (*it)->getIdNivelAcademico() << ";";
-                archivoBuscados << (*it)->getNivelAcademico() << ";";
-                archivoBuscados << (*it)->getIdNivelDeFormacion() << ";";
-                archivoBuscados << (*it)->getNivelDeFormacion() << ";";
-                archivoBuscados << (*it)->getIdMetodologia() << ";";
-                archivoBuscados << (*it)->getMetodologia() << ";";
-                archivoBuscados << (*it)->getIdArea() << ";";
-                archivoBuscados << (*it)->getAreaDeConocimiento() << ";";
-                archivoBuscados << (*it)->getIdNucleo() << ";";
-                archivoBuscados << (*it)->getNucleoBasicoDelConocimientoNbc() << ";";
-                archivoBuscados << (*it)->getIdCineCampoAmplio() << ";";
-                archivoBuscados << (*it)->getDescCineCampoAmplio() << ";";
-                archivoBuscados << (*it)->getIdCineCampoEspecifico() << ";";
-                archivoBuscados << (*it)->getDescCineCampoEspecifico() << ";";
-                archivoBuscados << (*it)->getIdCineCodigoDetallado() << ";";
-                archivoBuscados << (*it)->getDescCineCodigoDetallado() << ";";
-                archivoBuscados << (*it)->getCodigoDelDepartamentoPrograma() << ";";
-                archivoBuscados << (*it)->getDepartamentoDeOfertaDelPrograma() << ";";
-                archivoBuscados << (*it)->getCodigoDelMunicipioPrograma() << ";";
-                archivoBuscados << (*it)->getMunicipioDeOfertaDelPrograma() << ";";
+                archivoBuscados << (*it)->getCodigoDeLaInstitucion() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getIesPadre() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getInstitucionDeEducacionSuperiorIes() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getPrincipalOSeccional() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getIdSectorIes() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getSectorIes() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getIdCaracter() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getCaracterIes() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getCodigoDelDepartamentoIes() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getDepartamentoDeDomicilioDeLaIes() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getCodigoDelMunicipioIes() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getMunicipioDeDomicilioDeLaIes() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getCodigoSniesDelPrograma() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getProgramaAcademico() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getIdNivelAcademico() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getNivelAcademico() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getIdNivelDeFormacion() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getNivelDeFormacion() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getIdMetodologia() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getMetodologia() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getIdArea() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getAreaDeConocimiento() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getIdNucleo() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getNucleoBasicoDelConocimientoNbc() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getIdCineCampoAmplio() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getDescCineCampoAmplio() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getIdCineCampoEspecifico() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getDescCineCampoEspecifico() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getIdCineCodigoDetallado() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getDescCineCodigoDetallado() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getCodigoDelDepartamentoPrograma() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getDepartamentoDeOfertaDelPrograma() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getCodigoDelMunicipioPrograma() << Settings:: DELIMITADOR;
+                archivoBuscados << (*it)->getMunicipioDeOfertaDelPrograma() << Settings:: DELIMITADOR;
 
                 // Imprimimos la información del consolidado: (ID SEXO;SEXO;AÑO;SEMESTRE;ADMITIDOS;GRADUADOS;INSCRITOS;MATRICULADOS;NEOS)
                 Consolidado *consolidadoActual = (*it)->getConsolidado(i);
-                archivoBuscados << consolidadoActual->getIdSexo() << ";";
-                archivoBuscados << consolidadoActual->getSexo() << ";";
-                archivoBuscados << consolidadoActual->getAno() << ";";
-                archivoBuscados << consolidadoActual->getSemestre() << ";";
-                archivoBuscados << consolidadoActual->getAdmitidos() << ";";
-                archivoBuscados << consolidadoActual->getGraduados() << ";";
-                archivoBuscados << consolidadoActual->getInscritos() << ";";
-                archivoBuscados << consolidadoActual->getMatriculados() << ";";
+                archivoBuscados << consolidadoActual->getIdSexo() << Settings:: DELIMITADOR;
+                archivoBuscados << consolidadoActual->getSexo() << Settings:: DELIMITADOR;
+                archivoBuscados << consolidadoActual->getAno() << Settings:: DELIMITADOR;
+                archivoBuscados << consolidadoActual->getSemestre() << Settings:: DELIMITADOR;
+                archivoBuscados << consolidadoActual->getAdmitidos() << Settings:: DELIMITADOR;
+                archivoBuscados << consolidadoActual->getGraduados() << Settings:: DELIMITADOR;
+                archivoBuscados << consolidadoActual->getInscritos() << Settings:: DELIMITADOR;
+                archivoBuscados << consolidadoActual->getMatriculados() << Settings:: DELIMITADOR;
                 archivoBuscados << consolidadoActual->getMatriculadosPrimerSemestre();
                 // Saltamos de linea para la siguiente fila
                 archivoBuscados << endl;
@@ -508,7 +464,6 @@ bool GestorCsv::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &pr
 
         // Cambiamos el valor del booleano si logramos llegar hasta este punto
         estadoCreacion = true;
-        // Imprimimos ruta donde quedo el archivo
         cout << "Archivo Creado en: " << rutaCompleta << endl;
     }
 
@@ -516,7 +471,7 @@ bool GestorCsv::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &pr
     return estadoCreacion;
 }
 
-bool GestorCsv::crearArchivoExtra(string &ruta, vector<vector<string>> datosAImprimir)
+bool GestorCsv::crearArchivoExtra(string &ruta, vector<vector<string>> &datosAImprimir)
 {
     // Este bool nos ayudará a saber si se creo el archivo exitosamente
     bool estadoCreacion = false;
@@ -530,11 +485,11 @@ bool GestorCsv::crearArchivoExtra(string &ruta, vector<vector<string>> datosAImp
             // Imprimimos cada fila
             for (int j = 0; j < datosAImprimir[i].size(); j++)
             {
-                // Imprimimos cada dato separado por ';'
+                // Imprimimos cada dato separado por Settings:: delimitador
                 archivoExtra << datosAImprimir[i][j];
                 if (j != (datosAImprimir[i].size() - 1))
                 {
-                    archivoExtra << ";";
+                    archivoExtra << Settings:: DELIMITADOR;
                 }
             }
             // Saltamos de linea al terminar una fila
@@ -543,7 +498,7 @@ bool GestorCsv::crearArchivoExtra(string &ruta, vector<vector<string>> datosAImp
 
         // Cambiamos el valor del booleano si logramos llegar hasta este punto
         estadoCreacion = true;
-        // Imprimimos ruta donde quedo el archivo
+
         cout << "Archivo Creado en: " << rutaCompleta << endl;
     }
 

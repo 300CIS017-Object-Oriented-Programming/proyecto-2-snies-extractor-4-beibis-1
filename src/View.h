@@ -11,6 +11,9 @@ class View
 {
 private:
     SNIESController controlador;
+    bool validarEntrada(string&, bool);
+    void organizarAnios(string &, string &);
+    bool validarEntradaYN(); 
 
 public:
     View();
@@ -18,8 +21,12 @@ public:
     bool mostrarPantallaBienvenido();
     void mostrarDatosExtra();
     void buscarPorPalabraClaveYFormacion();
-    void salir();
+    void salir();    
     bool isConvetibleToInt(const string &);
+    
+
+
+
 };
 
 #endif

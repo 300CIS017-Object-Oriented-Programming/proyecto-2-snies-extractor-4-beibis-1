@@ -8,7 +8,11 @@
 #include <list>
 #include "ProgramaAcademico.h"
 #include "Consolidado.h"
+#include "Gestor.h"
 #include "GestorCsv.h"
+#include "GestorJson.h"
+#include "GestorTXT.h"
+#include "Settings.h"
 
 using namespace std;
 
@@ -28,12 +32,12 @@ private:
     string rutaOutput;
 
 public:
-    SNIESController() = default;
-    SNIESController(string &, string &, string &, string &, string &, string &, string &);
+    SNIESController();
     ~SNIESController();
     void procesarDatosCsv(string &, string &);
     void calcularDatosExtra(bool);
     void buscarProgramas(bool, string &, int);
+
 };
 
 #endif
