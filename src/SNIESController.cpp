@@ -2,17 +2,16 @@
 
 using namespace std;
 
-SNIESController::SNIESController(string &nuevaRutaProgramasCSV, string &nuevaRutaAdmitidos, string &nuevaRutaGraduados, string &nuevaRutaInscritos, string &nuevaRutaMatriculadosc, string &nuevaRutaMatriculadosPrimerSemestre, string &nuevaRutaOutput)
+SNIESController::SNIESController()
 {
-    // FIXME quitar los parámetros de las rutas de los parametros del constructor, usar el archivo de settings.h para poner las constantes
     gestorCsvObj = GestorCsv();
-    rutaProgramasCSV = nuevaRutaProgramasCSV;
-    rutaAdmitidos = nuevaRutaAdmitidos;
-    rutaGraduados = nuevaRutaGraduados;
-    rutaInscritos = nuevaRutaInscritos;
-    rutaMatriculados = nuevaRutaMatriculadosc;
-    rutaMatriculadosPrimerSemestre = nuevaRutaMatriculadosPrimerSemestre;
-    rutaOutput = nuevaRutaOutput;
+    rutaProgramasCSV = Settings::PROGRAMAS_FILTRAR_FILE_PATH;
+    rutaAdmitidos = Settings::ADMITIDOS_FILE_PATH;
+    rutaGraduados = Settings::GRADUADOS_FILE_PATH;
+    rutaInscritos = Settings::INSCRITOS_FILE_PATH;
+    rutaMatriculados = Settings::MATRICULADOS_FILE_PATH;
+    rutaMatriculadosPrimerSemestre = Settings::MATRICULADOS_PRIMER_SEMESTRE_FILE_PATH;
+    rutaOutput = Settings::OUTPUTS_PATH;
 }
 
 SNIESController::~SNIESController()
@@ -113,8 +112,9 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
 
         // Aquí puedes continuar con las demás asignaciones
 
-        Consolidado *consolidado[Settings::DATOS_ACADEM_DEMOGRAF];
-        for (int m = 0; m < Settings::DATOS_ACADEM_DEMOGRAF; ++m)
+        vector<Consolidado*> consolidado(Settings::DATOS_ACADEM_DEMOGRAF);
+
+        for (int m = 0; m < consolidado.size(); ++m)
         {
             consolidado[m] = new Consolidado();
             consolidado[m]->setIdSexo(stoi(programasAcademicosVector[i + m][columnasMap["ID SEXO"]]));
@@ -127,9 +127,9 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
 
         programasAcademicos.emplace(programaAcademico->getCodigoSniesDelPrograma(), programaAcademico);
     }
-    // cout << "despues crear programas academicos" << endl;
+
     programasAcademicosVector = gestorCsvObj.leerArchivoSegunda(rutaAdmitidos, ano2, codigosSnies);
-    // cout << "despues leer archivos segunda" << endl;
+
     for (int j = 0; j < programasAcademicosVector.size(); j += Settings::DATOS_ACADEM_DEMOGRAF)
     {
         map<int, ProgramaAcademico *>::iterator it = programasAcademicos.find(stoi(programasAcademicosVector[j][0]));
@@ -150,7 +150,7 @@ void SNIESController::procesarDatosCsv(string &ano1, string &ano2)
             }
         }
     }
-    // cout << "despues crear todos los consolidados" << endl;
+
     programasAcademicosVector = gestorCsvObj.leerArchivo(rutaGraduados, ano1, codigosSnies, Settings::COLUMNA_13);
 
     for (int k = 0; k < programasAcademicosVector.size(); k += Settings::DATOS_ACADEM_DEMOGRAF)
@@ -407,7 +407,7 @@ void SNIESController::calcularDatosExtra(bool flag)
     int sumaPrimerAno = 0;
     int sumaSegundoAno = 0;
 
-    for (map<int, ProgramaAcademico *>::iterator it = programasAcademicos.begin(); it != programasAcademicos.end(); ++it)
+    for (auto it = programasAcademicos.begin(); it != programasAcademicos.end(); ++it)
     {
         int neosPrimerAno = 0;
         int neosSegundoAno = 0;

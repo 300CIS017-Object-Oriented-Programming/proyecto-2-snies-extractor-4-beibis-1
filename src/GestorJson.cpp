@@ -1,6 +1,6 @@
 #include "GestorJson.h"
 
-bool GestorJson::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> etiquetasColumnas)
+bool GestorJson::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> &etiquetasColumnas)
 {
     // Verificar si se creó exitosamente el archivo
     bool estadoCreacion = false;
@@ -20,30 +20,30 @@ bool GestorJson::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapad
             esPrimero = false;
 
             archivoResultados << "  {" << endl;
-            archivoResultados << "    \"CodigoDeLaInstitucion\": \"" << (it->second)->getCodigoDeLaInstitucion() << "\"," << endl;
-            archivoResultados << "    \"IesPadre\": \"" << (it->second)->getIesPadre() << "\"," << endl;
-            archivoResultados << "    \"InstitucionDeEducacionSuperiorIes\": \"" << (it->second)->getInstitucionDeEducacionSuperiorIes() << "\"," << endl;
-            archivoResultados << "    \"PrincipalOSeccional\": \"" << (it->second)->getPrincipalOSeccional() << "\"," << endl;
-            archivoResultados << "    \"IdSectorIes\": \"" << (it->second)->getIdSectorIes() << "\"," << endl;
-            archivoResultados << "    \"SectorIes\": \"" << (it->second)->getSectorIes() << "\"," << endl;
-            archivoResultados << "    \"IdCaracter\": \"" << (it->second)->getIdCaracter() << "\"," << endl;
-            archivoResultados << "    \"CaracterIes\": \"" << (it->second)->getCaracterIes() << "\"," << endl;
-            archivoResultados << "    \"CodigoDelDepartamentoIes\": \"" << (it->second)->getCodigoDelDepartamentoIes() << "\"," << endl;
-            archivoResultados << "    \"DepartamentoDeDomicilioDeLaIes\": \"" << (it->second)->getDepartamentoDeDomicilioDeLaIes() << "\"," << endl;
-            archivoResultados << "    \"CodigoDelMunicipioIes\": \"" << (it->second)->getCodigoDelMunicipioIes() << "\"," << endl;
-            archivoResultados << "    \"MunicipioDeDomicilioDeLaIes\": \"" << (it->second)->getMunicipioDeDomicilioDeLaIes() << "\"," << endl;
-            archivoResultados << "    \"CodigoSniesDelPrograma\": \"" << (it->second)->getCodigoSniesDelPrograma() << "\"," << endl;
-            archivoResultados << "    \"ProgramaAcademico\": \"" << (it->second)->getProgramaAcademico() << "\"," << endl;
-            archivoResultados << "    \"IdNivelAcademico\": \"" << (it->second)->getIdNivelAcademico() << "\"," << endl;
-            archivoResultados << "    \"NivelAcademico\": \"" << (it->second)->getNivelAcademico() << "\"," << endl;
-            archivoResultados << "    \"IdNivelDeFormacion\": \"" << (it->second)->getIdNivelDeFormacion() << "\"," << endl;
-            archivoResultados << "    \"NivelDeFormacion\": \"" << (it->second)->getNivelDeFormacion() << "\"," << endl;
-            archivoResultados << "    \"IdMetodologia\": \"" << (it->second)->getIdMetodologia() << "\"," << endl;
-            archivoResultados << "    \"Metodologia\": \"" << (it->second)->getMetodologia() << "\"," << endl;
-            archivoResultados << "    \"IdArea\": \"" << (it->second)->getIdArea() << "\"," << endl;
-            archivoResultados << "    \"AreaDeConocimiento\": \"" << (it->second)->getAreaDeConocimiento() << "\"," << endl;
-            archivoResultados << "    \"IdNucleo\": \"" << (it->second)->getIdNucleo() << "\"," << endl;
-            archivoResultados << "    \"NucleoBasicoDelConocimientoNbc\": \"" << (it->second)->getNucleoBasicoDelConocimientoNbc() << "\"," << endl;
+            archivoResultados << R"(    "CodigoDeLaInstitucion": ")" << (it->second)->getCodigoDeLaInstitucion() << "\"," << endl;
+            archivoResultados << R"(    "IesPadre": ")" << (it->second)->getIesPadre() << "\"," << endl;
+            archivoResultados << R"(    "InstitucionDeEducacionSuperiorIes": ")" << (it->second)->getInstitucionDeEducacionSuperiorIes() << "\"," << endl;
+            archivoResultados << R"(    "PrincipalOSeccional": ")" << (it->second)->getPrincipalOSeccional() << "\"," << endl;
+            archivoResultados << R"(    "IdSectorIes": ")" << (it->second)->getIdSectorIes() << "\"," << endl;
+            archivoResultados << R"(    "SectorIes": ")" << (it->second)->getSectorIes() << "\"," << endl;
+            archivoResultados << R"(    "IdCaracter": ")" << (it->second)->getIdCaracter() << "\"," << endl;
+            archivoResultados << R"(    "CaracterIes": ")" << (it->second)->getCaracterIes() << "\"," << endl;
+            archivoResultados << R"(    "CodigoDelDepartamentoIes": ")" << (it->second)->getCodigoDelDepartamentoIes() << "\"," << endl;
+            archivoResultados << R"(    "DepartamentoDeDomicilioDeLaIes": ")" << (it->second)->getDepartamentoDeDomicilioDeLaIes() << "\"," << endl;
+            archivoResultados << R"(    "CodigoDelMunicipioIes": ")" << (it->second)->getCodigoDelMunicipioIes() << "\"," << endl;
+            archivoResultados << R"(    "MunicipioDeDomicilioDeLaIes": ")" << (it->second)->getMunicipioDeDomicilioDeLaIes() << "\"," << endl;
+            archivoResultados << R"(    "CodigoSniesDelPrograma": ")" << (it->second)->getCodigoSniesDelPrograma() << "\"," << endl;
+            archivoResultados << R"(    "ProgramaAcademico": ")" << (it->second)->getProgramaAcademico() << "\"," << endl;
+            archivoResultados << R"(    "IdNivelAcademico": ")" << (it->second)->getIdNivelAcademico() << "\"," << endl;
+            archivoResultados << R"(    "NivelAcademico": ")" << (it->second)->getNivelAcademico() << "\"," << endl;
+            archivoResultados << R"(    "IdNivelDeFormacion": ")" << (it->second)->getIdNivelDeFormacion() << "\"," << endl;
+            archivoResultados << R"(    "NivelDeFormacion": ")" << (it->second)->getNivelDeFormacion() << "\"," << endl;
+            archivoResultados << R"(    "IdMetodologia": ")" << (it->second)->getIdMetodologia() << "\"," << endl;
+            archivoResultados << R"(    "Metodologia": ")" << (it->second)->getMetodologia() << "\"," << endl;
+            archivoResultados << R"(    "IdArea": ")" << (it->second)->getIdArea() << "\"," << endl;
+            archivoResultados << R"(    "AreaDeConocimiento": ")" << (it->second)->getAreaDeConocimiento() << "\"," << endl;
+            archivoResultados << R"(    "IdNucleo": ")" << (it->second)->getIdNucleo() << "\"," << endl;
+            archivoResultados << R"(    "NucleoBasicoDelConocimientoNbc": ")" << (it->second)->getNucleoBasicoDelConocimientoNbc() << "\"," << endl;
 
             // Lista de consolidados
             archivoResultados << "    \"Consolidados\": [" << endl;
@@ -52,15 +52,15 @@ bool GestorJson::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapad
             {
                 Consolidado *consolidadoActual = (it->second)->getConsolidado(i);
                 archivoResultados << "      {" << endl;
-                archivoResultados << "        \"IdSexo\": \"" << consolidadoActual->getIdSexo() << "\"," << endl;
-                archivoResultados << "        \"Sexo\": \"" << consolidadoActual->getSexo() << "\"," << endl;
-                archivoResultados << "        \"Ano\": " << consolidadoActual->getAno() << "," << endl;
-                archivoResultados << "        \"Semestre\": " << consolidadoActual->getSemestre() << "," << endl;
-                archivoResultados << "        \"Admitidos\": " << consolidadoActual->getAdmitidos() << "," << endl;
-                archivoResultados << "        \"Graduados\": " << consolidadoActual->getGraduados() << "," << endl;
-                archivoResultados << "        \"Inscritos\": " << consolidadoActual->getInscritos() << "," << endl;
-                archivoResultados << "        \"Matriculados\": " << consolidadoActual->getMatriculados() << "," << endl;
-                archivoResultados << "        \"MatriculadosPrimerSemestre\": " << consolidadoActual->getMatriculadosPrimerSemestre() << endl;
+                archivoResultados << R"(        "IdSexo": ")" << consolidadoActual->getIdSexo() << "\"," << endl;
+                archivoResultados << R"(        "Sexo": ")" << consolidadoActual->getSexo() << "\"," << endl;
+                archivoResultados << R"(        "Ano": )" << consolidadoActual->getAno() << "," << endl;
+                archivoResultados << R"(        "Semestre": )" << consolidadoActual->getSemestre() << "," << endl;
+                archivoResultados << R"(        "Admitidos": )" << consolidadoActual->getAdmitidos() << "," << endl;
+                archivoResultados << R"(        "Graduados": )" << consolidadoActual->getGraduados() << "," << endl;
+                archivoResultados << R"(        "Inscritos": )" << consolidadoActual->getInscritos() << "," << endl;
+                archivoResultados << R"(        "Matriculados": )" << consolidadoActual->getMatriculados() << "," << endl;
+                archivoResultados << R"(        "MatriculadosPrimerSemestre": )" << consolidadoActual->getMatriculadosPrimerSemestre() << endl;
                 archivoResultados << "      }" << (i < 7 ? "," : "") << endl; // Coma entre consolidados, excepto el último
             }
 
@@ -79,7 +79,7 @@ bool GestorJson::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapad
 }
 
 
-bool GestorJson::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &programasBuscados, vector<string> etiquetasColumnas) {
+bool GestorJson::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &programasBuscados, vector<string> &etiquetasColumnas) {
     bool estadoCreacion = false;
     string rutaCompleta = ruta + "buscados.json";
     ofstream archivoBuscados(rutaCompleta);
@@ -96,54 +96,54 @@ bool GestorJson::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &p
             primero = false;
 
             archivoBuscados << "    {" << endl;  // Inicio del objeto
-            archivoBuscados << "        \"codigo_de_la_institucion\": \"" << (*it)->getCodigoDeLaInstitucion() << "\"," << endl;
-            archivoBuscados << "        \"ies_padre\": \"" << (*it)->getIesPadre() << "\"," << endl;
-            archivoBuscados << "        \"institucion_de_educacion_superior\": \"" << (*it)->getInstitucionDeEducacionSuperiorIes() << "\"," << endl;
-            archivoBuscados << "        \"principal_o_seccional\": \"" << (*it)->getPrincipalOSeccional() << "\"," << endl;
-            archivoBuscados << "        \"id_sector\": \"" << (*it)->getIdSectorIes() << "\"," << endl;
-            archivoBuscados << "        \"sector\": \"" << (*it)->getSectorIes() << "\"," << endl;
-            archivoBuscados << "        \"id_caracter\": \"" << (*it)->getIdCaracter() << "\"," << endl;
-            archivoBuscados << "        \"caracter\": \"" << (*it)->getCaracterIes() << "\"," << endl;
-            archivoBuscados << "        \"codigo_departamento\": \"" << (*it)->getCodigoDelDepartamentoIes() << "\"," << endl;
-            archivoBuscados << "        \"departamento_domicilio\": \"" << (*it)->getDepartamentoDeDomicilioDeLaIes() << "\"," << endl;
-            archivoBuscados << "        \"codigo_municipio\": \"" << (*it)->getCodigoDelMunicipioIes() << "\"," << endl;
-            archivoBuscados << "        \"municipio_domicilio\": \"" << (*it)->getMunicipioDeDomicilioDeLaIes() << "\"," << endl;
-            archivoBuscados << "        \"codigo_snies_programa\": \"" << (*it)->getCodigoSniesDelPrograma() << "\"," << endl;
-            archivoBuscados << "        \"programa_academico\": \"" << (*it)->getProgramaAcademico() << "\"," << endl;
-            archivoBuscados << "        \"id_nivel_academico\": \"" << (*it)->getIdNivelAcademico() << "\"," << endl;
-            archivoBuscados << "        \"nivel_academico\": \"" << (*it)->getNivelAcademico() << "\"," << endl;
-            archivoBuscados << "        \"id_nivel_formacion\": \"" << (*it)->getIdNivelDeFormacion() << "\"," << endl;
-            archivoBuscados << "        \"nivel_formacion\": \"" << (*it)->getNivelDeFormacion() << "\"," << endl;
-            archivoBuscados << "        \"id_metodologia\": \"" << (*it)->getIdMetodologia() << "\"," << endl;
-            archivoBuscados << "        \"metodologia\": \"" << (*it)->getMetodologia() << "\"," << endl;
-            archivoBuscados << "        \"id_area\": \"" << (*it)->getIdArea() << "\"," << endl;
-            archivoBuscados << "        \"area_de_conocimiento\": \"" << (*it)->getAreaDeConocimiento() << "\"," << endl;
-            archivoBuscados << "        \"id_nucleo\": \"" << (*it)->getIdNucleo() << "\"," << endl;
-            archivoBuscados << "        \"nucleo_basico\": \"" << (*it)->getNucleoBasicoDelConocimientoNbc() << "\"," << endl;
-            archivoBuscados << "        \"id_cine_campo_amplio\": \"" << (*it)->getIdCineCampoAmplio() << "\"," << endl;
-            archivoBuscados << "        \"desc_cine_campo_amplio\": \"" << (*it)->getDescCineCampoAmplio() << "\"," << endl;
-            archivoBuscados << "        \"id_cine_campo_especifico\": \"" << (*it)->getIdCineCampoEspecifico() << "\"," << endl;
-            archivoBuscados << "        \"desc_cine_campo_especifico\": \"" << (*it)->getDescCineCampoEspecifico() << "\"," << endl;
-            archivoBuscados << "        \"id_cine_codigo_detallado\": \"" << (*it)->getIdCineCodigoDetallado() << "\"," << endl;
-            archivoBuscados << "        \"desc_cine_codigo_detallado\": \"" << (*it)->getDescCineCodigoDetallado() << "\"," << endl;
-            archivoBuscados << "        \"codigo_departamento_programa\": \"" << (*it)->getCodigoDelDepartamentoPrograma() << "\"," << endl;
-            archivoBuscados << "        \"departamento_oferta_programa\": \"" << (*it)->getDepartamentoDeOfertaDelPrograma() << "\"," << endl;
-            archivoBuscados << "        \"codigo_municipio_programa\": \"" << (*it)->getCodigoDelMunicipioPrograma() << "\"," << endl;
-            archivoBuscados << "        \"municipio_oferta_programa\": \"" << (*it)->getMunicipioDeOfertaDelPrograma() << "\"," << endl;
+            archivoBuscados << R"(        "codigo_de_la_institucion": ")" << (*it)->getCodigoDeLaInstitucion() << "\"," << endl;
+            archivoBuscados << R"(        "ies_padre": ")" << (*it)->getIesPadre() << "\"," << endl;
+            archivoBuscados << R"(        "institucion_de_educacion_superior": ")" << (*it)->getInstitucionDeEducacionSuperiorIes() << "\"," << endl;
+            archivoBuscados << R"(        "principal_o_seccional": ")" << (*it)->getPrincipalOSeccional() << "\"," << endl;
+            archivoBuscados << R"(        "id_sector": ")" << (*it)->getIdSectorIes() << "\"," << endl;
+            archivoBuscados << R"(        "sector": ")" << (*it)->getSectorIes() << "\"," << endl;
+            archivoBuscados << R"(        "id_caracter": ")" << (*it)->getIdCaracter() << "\"," << endl;
+            archivoBuscados << R"(        "caracter": ")" << (*it)->getCaracterIes() << "\"," << endl;
+            archivoBuscados << R"(        "codigo_departamento": ")" << (*it)->getCodigoDelDepartamentoIes() << "\"," << endl;
+            archivoBuscados << R"(        "departamento_domicilio": ")" << (*it)->getDepartamentoDeDomicilioDeLaIes() << "\"," << endl;
+            archivoBuscados << R"(        "codigo_municipio": ")" << (*it)->getCodigoDelMunicipioIes() << "\"," << endl;
+            archivoBuscados << R"(        "municipio_domicilio": ")" << (*it)->getMunicipioDeDomicilioDeLaIes() << "\"," << endl;
+            archivoBuscados << R"(        "codigo_snies_programa": ")" << (*it)->getCodigoSniesDelPrograma() << "\"," << endl;
+            archivoBuscados << R"(        "programa_academico": ")" << (*it)->getProgramaAcademico() << "\"," << endl;
+            archivoBuscados << R"(        "id_nivel_academico": ")" << (*it)->getIdNivelAcademico() << "\"," << endl;
+            archivoBuscados << R"(        "nivel_academico": ")" << (*it)->getNivelAcademico() << "\"," << endl;
+            archivoBuscados << R"(        "id_nivel_formacion": ")" << (*it)->getIdNivelDeFormacion() << "\"," << endl;
+            archivoBuscados << R"(        "nivel_formacion": ")" << (*it)->getNivelDeFormacion() << "\"," << endl;
+            archivoBuscados << R"(        "id_metodologia": ")" << (*it)->getIdMetodologia() << "\"," << endl;
+            archivoBuscados << R"(        "metodologia": ")" << (*it)->getMetodologia() << "\"," << endl;
+            archivoBuscados << R"(        "id_area": ")" << (*it)->getIdArea() << "\"," << endl;
+            archivoBuscados << R"(        "area_de_conocimiento": ")" << (*it)->getAreaDeConocimiento() << "\"," << endl;
+            archivoBuscados << R"(        "id_nucleo": ")" << (*it)->getIdNucleo() << "\"," << endl;
+            archivoBuscados << R"(        "nucleo_basico": ")" << (*it)->getNucleoBasicoDelConocimientoNbc() << "\"," << endl;
+            archivoBuscados << R"(        "id_cine_campo_amplio": ")" << (*it)->getIdCineCampoAmplio() << "\"," << endl;
+            archivoBuscados << R"(        "desc_cine_campo_amplio": ")" << (*it)->getDescCineCampoAmplio() << "\"," << endl;
+            archivoBuscados << R"(        "id_cine_campo_especifico": ")" << (*it)->getIdCineCampoEspecifico() << "\"," << endl;
+            archivoBuscados << R"(        "desc_cine_campo_especifico": ")" << (*it)->getDescCineCampoEspecifico() << "\"," << endl;
+            archivoBuscados << R"(        "id_cine_codigo_detallado": ")" << (*it)->getIdCineCodigoDetallado() << "\"," << endl;
+            archivoBuscados << R"(        "desc_cine_codigo_detallado": ")" << (*it)->getDescCineCodigoDetallado() << "\"," << endl;
+            archivoBuscados << R"(        "codigo_departamento_programa": ")" << (*it)->getCodigoDelDepartamentoPrograma() << "\"," << endl;
+            archivoBuscados << R"(        "departamento_oferta_programa": ")" << (*it)->getDepartamentoDeOfertaDelPrograma() << "\"," << endl;
+            archivoBuscados << R"(        "codigo_municipio_programa": ")" << (*it)->getCodigoDelMunicipioPrograma() << "\"," << endl;
+            archivoBuscados << R"(        "municipio_oferta_programa": ")" << (*it)->getMunicipioDeOfertaDelPrograma() << "\"," << endl;
 
             // Información del consolidado
             for (int i = 0; i < Settings::COLUMNAS_INFO_CONSOLIDADOS; i++) {
                 Consolidado *consolidadoActual = (*it)->getConsolidado(i);
                 archivoBuscados << "        \"consolidado_" << i << "\": {" << endl;
-                archivoBuscados << "            \"id_sexo\": \"" << consolidadoActual->getIdSexo() << "\"," << endl;
-                archivoBuscados << "            \"sexo\": \"" << consolidadoActual->getSexo() << "\"," << endl;
-                archivoBuscados << "            \"ano\": \"" << consolidadoActual->getAno() << "\"," << endl;
-                archivoBuscados << "            \"semestre\": \"" << consolidadoActual->getSemestre() << "\"," << endl;
-                archivoBuscados << "            \"admitidos\": \"" << consolidadoActual->getAdmitidos() << "\"," << endl;
-                archivoBuscados << "            \"graduados\": \"" << consolidadoActual->getGraduados() << "\"," << endl;
-                archivoBuscados << "            \"inscritos\": \"" << consolidadoActual->getInscritos() << "\"," << endl;
-                archivoBuscados << "            \"matriculados\": \"" << consolidadoActual->getMatriculados() << "\"," << endl;
-                archivoBuscados << "            \"matriculados_primer_semestre\": \"" << consolidadoActual->getMatriculadosPrimerSemestre() << "\"" << endl;
+                archivoBuscados << R"(            "id_sexo": ")" << consolidadoActual->getIdSexo() << "\"," << endl;
+                archivoBuscados << R"(            "sexo": ")" << consolidadoActual->getSexo() << "\"," << endl;
+                archivoBuscados << R"(            "ano": ")" << consolidadoActual->getAno() << "\"," << endl;
+                archivoBuscados << R"(            "semestre": ")" << consolidadoActual->getSemestre() << "\"," << endl;
+                archivoBuscados << R"(            "admitidos": ")" << consolidadoActual->getAdmitidos() << "\"," << endl;
+                archivoBuscados << R"(            "graduados": ")" << consolidadoActual->getGraduados() << "\"," << endl;
+                archivoBuscados << R"(            "inscritos": ")" << consolidadoActual->getInscritos() << "\"," << endl;
+                archivoBuscados << R"(            "matriculados": ")" << consolidadoActual->getMatriculados() << "\"," << endl;
+                archivoBuscados << R"(            "matriculados_primer_semestre": ")" << consolidadoActual->getMatriculadosPrimerSemestre() << "\"" << endl;
                 archivoBuscados << "        }"; // Cierre del objeto consolidado
                 if (i < 7) {  // Evitar la coma después del último consolidado
                     archivoBuscados << ",";
@@ -163,7 +163,7 @@ bool GestorJson::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &p
 }
 
 
-bool GestorJson::crearArchivoExtra(string &ruta, vector<vector<string>> datosAImprimir)
+bool GestorJson::crearArchivoExtra(string &ruta, vector<vector<string>> &datosAImprimir)
 {
     // Verificar creación si la creación del archivo fue exitosa
     bool estadoCreacion = false;
