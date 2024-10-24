@@ -1,6 +1,6 @@
 #include "GestorCsv.h"
 
-vector<int> GestorCsv::leerProgramasCsv(string &ruta)
+vector<int> GestorCsv::leerProgramasCsv(const string &ruta)
 {
     vector<int> codigosSniesRetorno;
     ifstream archivoProgramasCsv(ruta);
@@ -304,7 +304,7 @@ vector<vector<string>> GestorCsv::leerArchivo(string &rutaBase, string &ano, vec
     return matrizResultado;
 }
 
-bool GestorCsv::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> etiquetasColumnas)
+bool GestorCsv::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> &etiquetasColumnas)
 {
     // Este bool nos ayudará a saber si se creo exitosamente el archivo
     bool estadoCreacion = false;
@@ -319,9 +319,8 @@ bool GestorCsv::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapade
         }
         archivoResultados << "GRADUADOS;INSCRITOS;MATRICULADOS;NEOS" << endl;
 
-        map<int, ProgramaAcademico *>::iterator it;
         // Leemos todos los programas del mapa para imprimirlos en el archivo
-        for (it = mapadeProgramasAcademicos.begin(); it != mapadeProgramasAcademicos.end(); it++)
+        for (map<int, ProgramaAcademico *>::iterator it = mapadeProgramasAcademicos.begin(); it != mapadeProgramasAcademicos.end(); it++)
         {
             // Imprimimos cada uno de los 8 consolidados por programa
             for (int i = 0; i < Settings::COLUMNAS_INFO_CONSOLIDADOS; i++)
@@ -380,7 +379,7 @@ bool GestorCsv::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapade
 
         // Cambiamos el valor del booleano si logramos llegar hasta este punto
         estadoCreacion = true;
-        // Imprimimos ruta donde quedo el archivo
+
         cout << "Archivo Creado en: " << rutaCompleta << endl;
     }
 
@@ -388,7 +387,7 @@ bool GestorCsv::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapade
     return estadoCreacion;
 }
 
-bool GestorCsv::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &programasBuscados, vector<string> etiquetasColumnas)
+bool GestorCsv::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &programasBuscados, vector<string> &etiquetasColumnas)
 {
     // Este bool nos ayudará a saber si se creo exitosamente el archivo
     bool estadoCreacion = false;
@@ -465,7 +464,6 @@ bool GestorCsv::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &pr
 
         // Cambiamos el valor del booleano si logramos llegar hasta este punto
         estadoCreacion = true;
-        // Imprimimos ruta donde quedo el archivo
         cout << "Archivo Creado en: " << rutaCompleta << endl;
     }
 
@@ -473,7 +471,7 @@ bool GestorCsv::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &pr
     return estadoCreacion;
 }
 
-bool GestorCsv::crearArchivoExtra(string &ruta, vector<vector<string>> datosAImprimir)
+bool GestorCsv::crearArchivoExtra(string &ruta, vector<vector<string>> &datosAImprimir)
 {
     // Este bool nos ayudará a saber si se creo el archivo exitosamente
     bool estadoCreacion = false;
@@ -500,7 +498,7 @@ bool GestorCsv::crearArchivoExtra(string &ruta, vector<vector<string>> datosAImp
 
         // Cambiamos el valor del booleano si logramos llegar hasta este punto
         estadoCreacion = true;
-        // Imprimimos ruta donde quedo el archivo
+
         cout << "Archivo Creado en: " << rutaCompleta << endl;
     }
 

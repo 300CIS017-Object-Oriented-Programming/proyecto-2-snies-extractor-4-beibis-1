@@ -30,32 +30,33 @@ public:
     Consolidado();
     Consolidado(int, string, int, int, int, int, int, int, int);
 
-    int getIdSexo();
+    int getIdSexo() const;
     void setIdSexo(int);
 
-    string getSexo();
+    string getSexo() const;
     void setSexo(string &);
 
-    int getAno();
+    int getAno() const;
     void setAno(int);
 
-    int getSemestre();
+    int getSemestre() const;
     void setSemestre(int);
 
-    int getInscritos();
+    int getInscritos() const;
     void setInscritos(int);
 
-    int getAdmitidos();
+    int getAdmitidos() const;
     void setAdmitidos(int);
 
-    int getMatriculados();
+    int getMatriculados() const;
     void setMatriculados(int);
 
-    int getMatriculadosPrimerSemestre();
+    int getMatriculadosPrimerSemestre() const;
     void setMatriculadosPrimerSemestre(int);
 
-    int getGraduados();
+    int getGraduados() const;
     void setGraduados(int);
+
 };
 
 #endif // CONSOLIDADO_H

@@ -1,6 +1,6 @@
 #include "GestorTXT.h"
 
-bool GestorTxt::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> etiquetasColumnas)
+bool GestorTxt::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapadeProgramasAcademicos, vector<string> &etiquetasColumnas)
 {
     // Verificar si se creó exitosamente el archivo
     bool estadoCreacion = false;
@@ -11,7 +11,7 @@ bool GestorTxt::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapade
         // Se imprime en el archivo las etiquetas (Primera fila)
         for (int i = 0; i < etiquetasColumnas.size(); i++)
         {
-            archivoResultados << etiquetasColumnas[i] << "    ";  // Usamos espacios en lugar de ";"
+            archivoResultados << etiquetasColumnas[i] << "    ";
         }
         archivoResultados << "GRADUADOS    INSCRITOS    MATRICULADOS    NEOS" << endl;
 
@@ -69,14 +69,13 @@ bool GestorTxt::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapade
                 archivoResultados << consolidadoActual->getMatriculados() << "    ";
                 archivoResultados << consolidadoActual->getMatriculadosPrimerSemestre();
 
-                // Saltamos de línea para la siguiente fila
                 archivoResultados << endl;
             }
         }
 
         // Cambiamos el valor del booleano si logramos llegar hasta este punto
         estadoCreacion = true;
-        // Imprimimos ruta donde quedó el archivo
+
         cout << "Archivo Creado en: " << rutaCompleta << endl;
     }
 
@@ -85,7 +84,7 @@ bool GestorTxt::crearArchivo(string &ruta, map<int, ProgramaAcademico *> &mapade
 }
 
 
-bool GestorTxt::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &programasBuscados, vector<string> etiquetasColumnas)
+bool GestorTxt::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &programasBuscados, vector<string> &etiquetasColumnas)
 {
     // Este bool nos ayudará a saber si se creó exitosamente el archivo
     bool estadoCreacion = false;
@@ -94,9 +93,8 @@ bool GestorTxt::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &pr
     if (archivoBuscados.is_open())
     {
         // Imprimimos en el archivo las etiquetas (Primera fila)
-        for (int i = 0; i < etiquetasColumnas.size(); i++)
-        {
-            archivoBuscados << etiquetasColumnas[i] << "\t";  // Usamos tabulaciones en lugar de ';'
+        for (const auto &etiqueta : etiquetasColumnas) {
+            archivoBuscados << etiqueta << "\t";
         }
         archivoBuscados << "GRADUADOS\tINSCRITOS\tMATRICULADOS\tNEOS" << endl;
 
@@ -150,7 +148,7 @@ bool GestorTxt::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &pr
                 archivoBuscados << consolidadoActual->getInscritos() << "\t";
                 archivoBuscados << consolidadoActual->getMatriculados() << "\t";
                 archivoBuscados << consolidadoActual->getMatriculadosPrimerSemestre();
-                // Saltamos de línea para la siguiente fila
+
                 archivoBuscados << endl;
             }
         }
@@ -163,11 +161,11 @@ bool GestorTxt::crearArchivoBuscados(string &ruta, list<ProgramaAcademico *> &pr
     return estadoCreacion;
 }
 
-bool GestorTxt::crearArchivoExtra(string &ruta, vector<vector<string>> datosAImprimir)
+bool GestorTxt::crearArchivoExtra(string &ruta, vector<vector<string>> &datosAImprimir)
 {
     // Este bool nos ayudará a saber si se creó el archivo exitosamente
     bool estadoCreacion = false;
-    string rutaCompleta = ruta + "extras.txt";  // Cambiamos la extensión a .txt
+    string rutaCompleta = ruta + "extras.txt";
     ofstream archivoExtra(rutaCompleta);
     if (archivoExtra.is_open())
     {

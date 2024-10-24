@@ -28,8 +28,11 @@ public:
     static const std::string ADMITIDOS_FILE_PATH;
     static const std::string MATRICULADOS_FILE_PATH;
     static const std::string INSCRITOS_FILE_PATH;
+    static const std::string GRADUADOS_FILE_PATH;
     static const std::string PROGRAMAS_FILTRAR_FILE_PATH;
+    static const std::string MATRICULADOS_PRIMER_SEMESTRE_FILE_PATH;
     static const std::string BASE_PATH;
+    static const std::string OUTPUTS_PATH;
     static const char DELIMITADOR;
     static const int COLUMNAS_INFO_CONSOLIDADOS;
     static const int DATOS_ACADEM_DEMOGRAF;

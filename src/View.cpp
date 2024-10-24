@@ -2,18 +2,7 @@
 
 View::View()
 {
-    // NEW quitar estas variables de aquí y del constructor del SNIESController
-    //  estas constantes las leerá el SNIESController del archivo de Settings.h
-    //  Completar el archivo con el resto de constantes necesarias
-    string ruta1 = "C:/Users/Usuario/Documents/POO/aquiii/proyecto-2-snies-extractor-4-beibis-1/docs/inputs/programas.csv";
-    string ruta2 = "C:/Users/Usuario/Documents/POO/aquiii/proyecto-2-snies-extractor-4-beibis-1/docs/inputs/admitidos";
-    string ruta3 = "C:/Users/Usuario/Documents/POO/aquiii/proyecto-2-snies-extractor-4-beibis-1/docs/inputs/graduados";
-    string ruta4 = "C:/Users/Usuario/Documents/POO/aquiii/proyecto-2-snies-extractor-4-beibis-1/docs/inputs/inscritos";
-    string ruta5 = "C:/Users/Usuario/Documents/POO/aquiii/proyecto-2-snies-extractor-4-beibis-1/docs/inputs/matriculados";
-    string ruta6 = "C:/Users/Usuario/Documents/POO/aquiii/proyecto-2-snies-extractor-4-beibis-1/docs/inputs/matriculadosPrimerSemestre";
-    string ruta7 = "C:/Users/Usuario/Documents/POO/aquiii/proyecto-2-snies-extractor-4-beibis-1/docs/outputs/";
-
-    controlador = SNIESController(ruta1, ruta2, ruta3, ruta4, ruta5, ruta6, ruta7);
+    controlador = SNIESController();
 }
 
 View::~View()
