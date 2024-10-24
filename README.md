@@ -118,7 +118,7 @@ GestorTXT:
 
 **** 
 
-**Link al video explicativo**
+**Link al video explicativo:**
 
 https://youtu.be/ROt_RzHWEyg
 
